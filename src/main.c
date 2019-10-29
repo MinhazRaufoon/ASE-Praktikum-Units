@@ -100,24 +100,6 @@ void showData(int value)
  *                     |_|  \___/|___/ \___/                        *
  *                                                                  *
  ********************************************************************/  
-  if(value <= 256)
-  {   
-    /* LED0 - on, LED1 - off, LED2 - off, LED3 - off */
-  }
-  else if(value > 256 && value <= 512)
-  {  
-    /* LED0 - on, LED1 - on, LED2 - off, LED3 - off */
-  }
-  else if(value > 512 && value <= 768)
-  {  
-    /* LED0 - on, LED1 - on, LED2 - on, LED3 - off */
-  }    
-  else
-  {  
-    /* LED0 - on, LED1 - on, LED2 - on, LED3 - on */
-  }     
-}
-
 void showData_2_1(int value) {
     if(value <= 256)
       {   
@@ -206,17 +188,17 @@ void showData_2_3(int value) {
 void task_3_1() {
     int b5 = SIU.GPDI[BT5_PCR].R;
     int b6 = SIU.GPDI[BT6_PCR].R;
-    if (!b5) {
+    if (b5 == 0) {
         led_on(LED5_PCR);
     }
-    else if (b5) {
+    else {
         led_off(LED5_PCR);
     }
 
-    if (b6) {
+    if (b6 != 0) {
         led_on(LED6_PCR);
     }
-    else if (!b6) {
+    else {
         led_off(LED6_PCR);
     }
 }
