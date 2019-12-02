@@ -1,0 +1,94 @@
+velocity of the car used in
+	ESC - electronic stability control
+	ABS - antilock breaking system
+	ACC - adaptive cruise control
+
+advantages of bus systems over traditional p2p communication:
+	multiple use of signals
+	reduction of cost, weight, installation space
+	improved reliability, security, maintainability
+	easy connection of other system components
+	simplification of the vehicle assembly
+
+Highspeed CAN (CAN-C):
+	ISO 11898-2
+	high data rate
+	short latency
+	125K-1MBPS
+	motor management, engine controlling, car stability systems
+
+Lowspeed CAN (CAN-B)
+	ISO 11898-3
+	upto 125KBPS
+	comfort and vehicle body area
+
+Functions of Data Link Layer:
+	addressing
+	message definition
+	bus access
+	synchronization
+	failure management
+
+Types of messages in CAN bus system:
+	Data Frame: 
+		data sent by a participant
+	Remote Frame: 
+		data frame for remote transmission request
+		request data from a specific participant in the network
+	Error Frame:
+		show errors in the network
+	Overload Frame:
+		forced delay between remote and data frame
+
+
+CAN2.0A:
+	1bit - SOF
+	11bit - ID ------------------ 29bit for CAN2.0B
+	7bit - control ------------------ 9bit for CAN2.0B
+	0-64bit - Data
+	16bit - CRC
+	2bit - ACK
+	7bit - EOF	
+
+Function of control bits:
+	if message is remote frame
+	which format used
+	data length
+
+
+Bit fault vs Ack Fault
+
+Components for CAN communication:
+	CPU
+	CAN controller
+	CAN transceiver
+
+Functions of CAN transceiver:
+	implements physical layer
+	transforms bitstream of CAN controller to voltage levels, vice versa
+
+Functions of CAN controller:
+	implements data link layer
+
+Components of CAN controller:
+	Sending & receiving cache
+	Filter components for acceptance filtering
+	management unit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

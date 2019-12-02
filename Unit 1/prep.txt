@@ -1,0 +1,62 @@
+What is ECU?
+	ECU means electronic control unit. It's an embedded system which controls one or more electronic subsystems in a vehicle. ECU integrates the following functions - analysis of sensor data, calculations, and controlling the actuators.
+
+Why is ECU an Embedded System?
+	- ECU has a specific purpose, it controls the electronic subsystems of a vehicle
+	- ECU has strict restrictions on cost, performance, size etc.
+	- ECUs can be a part of a bigger System
+
+Name some ECUs in a Car
+	ACC - Adaptive Cruise Control
+	ESP - Electronic Stability Program
+	ABS - antilock braking system
+	ECM - engine control module
+
+Embedded System - computer with special purpose
+
+Distributed System - computers in a network which communicates by messages
+
+interactive system - 
+	a system of hardware and software components which process user inputs and returns result
+
+reactive system - 
+	a system of hardware and software components which  interacts with the environment
+
+realtime system - 
+	a system of hardware and software components which guarantees the completion of a task within a predefined deadline
+
+Unit of a mechatronic system - sensors, actuators, ECUs
+
+Sensor - 
+	electronic device which measures a physical quantity from the environment such as temperature, pressure etc, and converts the information into an electric signal
+
+Actuator - 
+	a machine which receives electric signals from ECU and converts it into mechanical motion or any physical quantity, such as light or sound.
+
+Requirements of a modern day ECU:
+	- reliable under rough and changing ambient conditions
+	- high demands to dependability, availability, security
+
+How ECUs communicate?
+	by message exchange through BUS that interconnects the ECUs
+
+ECUs in a car are divided into the following subsystems
+	Engine
+	chassis
+	body
+	multimedia
+	security
+
+Parts of a Raisonance evaluation board
+	Digital Output Area
+	Digital Input Area
+	Analog Area
+	Communication Area
+	Secondary Serial/CAN area
+
+parts of a microcontroller
+	processor
+	memory
+	periphery modules
+
+
