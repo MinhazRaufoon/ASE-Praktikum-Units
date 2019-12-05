@@ -90,9 +90,6 @@ void led_off(int pcr) {
     SIU.GPDO[pcr].R = 1;
 }
 
-
-void showData(int value)
-{
 /********************************************************************
  *                    _____  ___  ___   ___                         *
  *                   |_   _|/ _ \|   \ / _ \                        *
@@ -217,7 +214,8 @@ void task_3_1() {
 
 void toggle_led(int pcr) {
     int v = SIU.GPDO[pcr].R;
-    if (!v) SIU.GPDO[pcr].R = 1;
+
+    if (v == 0) SIU.GPDO[pcr].R = 1;
     else SIU.GPDO[pcr].R = 0;
 }
 
@@ -237,7 +235,7 @@ void PITCHANNEL1() {
 void task_3_2() {
     int swt = SIU.GPDI[SW1_PCR].R;
 
-    if (!swt) {
+    if (swt == 0) {
         PIT_ConfigureTimer(0, 1000);
         PIT_StartTimer(0);
     }
