@@ -205,6 +205,7 @@ void can_receive() {
 void channel1_ISR(void) {
   /* gets called every 200ms */
   indicateECU2Status();
+  canSendECU1Status();
   PIT.CHANNEL[1].TFLG.B.TIF = 1;
 }
 
