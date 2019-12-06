@@ -6,8 +6,8 @@
 #define AUTO 1
 #define MANUAL 2
 
-#define ALIVE = 2
-#define ABSENT = 3
+#define ALIVE 2
+#define ABSENT 3
 
 #define ID_LIGHT_STATES_MSG 0x201
 #define ID_RPM_MSG 0x202
