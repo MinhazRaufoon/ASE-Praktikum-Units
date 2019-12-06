@@ -94,10 +94,11 @@ int getRPM() {
 }
 
 int getLightState() {
-  int lightState = ecu1State.indicatorStates | (ecu1State.headlightStates << 3);
   if (isAutomaticMode() && getLightIntensity() < 512) {
     turnOnLowbeamAndParkingLight();
   }
+
+  int lightState = ecu1State.indicatorStates | (ecu1State.headlightStates << 3);
   return lightState;
 }
 
