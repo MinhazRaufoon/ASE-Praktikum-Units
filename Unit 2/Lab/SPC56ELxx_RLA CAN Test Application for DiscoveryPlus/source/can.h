@@ -10,8 +10,8 @@
 #include "lldconf.h"
 
 
-#define MASK_REGISTER 0x81
-#define ACCEPTANCE_REGISTER 0x8A
+#define MASK_REGISTER 0x740
+#define ACCEPTANCE_REGISTER 0x100
 
 
 #endif /* CAN_H_ */
