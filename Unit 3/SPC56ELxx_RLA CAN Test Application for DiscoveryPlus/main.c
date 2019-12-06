@@ -43,7 +43,7 @@ int isAutomaticMode();
 void turnOnLowbeamAndParkingLight();
 void indicateECU2Status();
 
-void can_send(int bufferIdx, int data);
+void can_send(int bufferIdx, int id, int data, int dataLength);
 void canSendRPMValue();
 void canSendLightStates();
 void canOnReceive();
