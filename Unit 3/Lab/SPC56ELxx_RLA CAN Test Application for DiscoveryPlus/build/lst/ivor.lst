@@ -1,0 +1,898 @@
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 1
+
+
+   1              	# 1 "./components/spc56elxx_osal_component_rla/lib/src/ivor.s"
+   1              	/*
+   0              	
+   0              	
+   2              	    SPC5 RLA - Copyright (C) 2017 STMicroelectronics
+   3              	
+   4              	    Licensed under the Apache License, Version 2.0 (the "License").
+   5              	    You may not use this file except in compliance with the License.
+   6              	    You may obtain a copy of the License at
+   7              	
+   8              	        http://www.apache.org/licenses/LICENSE-2.0
+   9              	
+  10              	    Unless required by applicable law or agreed to in writing, software
+  11              	    distributed under the License is distributed on an "AS IS" BASIS,
+  12              	    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13              	    See the License for the specific language governing permissions and
+  14              	    limitations under the License.
+  15              	*/
+  16              	
+  17              	/**
+  18              	 * @file    ivor.s
+  19              	 * @brief   Kernel ISRs.
+  20              	 *
+  21              	 * @addtogroup PPC_CORE
+  22              	 * @{
+  23              	 */
+  24              	
+  25              	/*
+  26              	 * Imports the configuration headers.
+  27              	 */
+  28              	#define _FROM_ASM_
+  29              	#include "platform.h"
+   1              	/*
+   2              	    SPC5 RLA - Copyright (C) 2015 STMicroelectronics
+   3              	
+   4              	    Licensed under the Apache License, Version 2.0 (the "License").
+   5              	    You may not use this file except in compliance with the License.
+   6              	    You may obtain a copy of the License at
+   7              	
+   8              	        http://www.apache.org/licenses/LICENSE-2.0
+   9              	
+  10              	    Unless required by applicable law or agreed to in writing, software
+  11              	    distributed under the License is distributed on an "AS IS" BASIS,
+  12              	    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13              	    See the License for the specific language governing permissions and
+  14              	    limitations under the License.
+  15              	*/
+  16              	
+  17              	/**
+  18              	 * @file    platform.h
+  19              	 * @brief   platform file.
+  20              	 */
+  21              	
+  22              	#ifndef _PLATFORM_H_
+  23              	#define _PLATFORM_H_
+  24              	
+  25              	#include "core.h"
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 2
+
+
+   1              	/*
+  26              	#include "toolchain.h"
+   1              	/*
+  27              	#include "intc.h"
+   1              	/*
+  28              	#if !defined(_FROM_ASM_)
+  30              	#include "irq_cfg.h"
+   1              	#ifndef _IRQ_CFG_H_
+  31              	#include "osal_cfg.h"
+   1              	/*
+  32              	#include "ivor_cfg.h"
+   1              	/*
+   2              	    SPC5 RLA - Copyright (C) 2017 STMicroelectronics
+   3              	
+   4              	    Licensed under the Apache License, Version 2.0 (the "License").
+   5              	    You may not use this file except in compliance with the License.
+   6              	    You may obtain a copy of the License at
+   7              	
+   8              	        http://www.apache.org/licenses/LICENSE-2.0
+   9              	
+  10              	    Unless required by applicable law or agreed to in writing, software
+  11              	    distributed under the License is distributed on an "AS IS" BASIS,
+  12              	    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13              	    See the License for the specific language governing permissions and
+  14              	    limitations under the License.
+  15              	*/
+  16              	
+  17              	/**
+  18              	 * @file    ivor_cfg.h
+  19              	 * @brief   IVOR Handling configuration.
+  20              	 *
+  21              	 * @addtogroup IVOR
+  22              	 * @{
+  23              	 */
+  24              	
+  25              	#ifndef _IVOR_CFG_H_
+  26              	#define _IVOR_CFG_H_
+  27              	
+  28              	#include "osal_cfg.h"
+  29              	
+  33              	#include "boot.h"
+   1              	/*
+  34              	#include "ivor.h"
+   1              	/*
+   2              	    SPC5 RLA - Copyright (C) 2018 STMicroelectronics
+   3              	
+   4              	    Licensed under the Apache License, Version 2.0 (the "License").
+   5              	    You may not use this file except in compliance with the License.
+   6              	    You may obtain a copy of the License at
+   7              	
+   8              	        http://www.apache.org/licenses/LICENSE-2.0
+   9              	
+  10              	    Unless required by applicable law or agreed to in writing, software
+  11              	    distributed under the License is distributed on an "AS IS" BASIS,
+  12              	    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13              	    See the License for the specific language governing permissions and
+  14              	    limitations under the License.
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 3
+
+
+  15              	*/
+  16              	
+  17              	/**
+  18              	 * @file    ivor.h
+  19              	 * @brief   Interrupt Handler Macros.
+  20              	 *
+  21              	 * @addtogroup PPC_CORE
+  22              	 * @{
+  23              	 */
+  24              	
+  25              	#define _FROM_ASM_
+  26              	#include "core.h"
+  27              	
+  28              	#if !defined(__DOXYGEN__)
+  29              	
+  30              	 /* Context save.*/
+  31              	.macro SAVE_CONTEXT
+  32              	        e_stwu      sp, -80(sp)             /* Size of the extctx structure.*/
+  33              	        e_stmvsrrw  8(sp)                   /* Saves PC, MSR (SRR0, SRR1).  */
+  34              	        e_stmvsprw  16(sp)                  /* Saves CR, LR, CTR, XER.      */
+  35              	        e_stmvgprw  32(sp)                  /* Saves GPR0, GPR3...GPR12.    */
+  36              	.endm
+  37              	
+  38              	/* Context restore.*/
+  39              	.macro RESTORE_CONTEXT
+  40              	        e_lmvgprw   32(sp)                  /* Restores GPR0, GPR3...GPR12.  */
+  41              	        e_lmvsprw   16(sp)                  /* Restores CR, LR, CTR, XER.    */
+  42              	        e_lmvsrrw   8(sp)                   /* Restores PC, MSR (SRR0, SRR1).*/
+  43              	        e_addi      sp, sp, 80              /* Back to the previous frame.   */
+  44              	.endm
+  45              	
+  46              	/* Context save for critical class interrupt.*/
+  47              	.macro SAVE_CONTEXT_CRITICAL
+  48              	        e_stwu      sp, -80(sp)             /* Size of the extctx structure.*/
+  49              	        e_stmvcsrrw  8(sp)                  /* Saves PC, MSR (CSRR0, CSRR1).*/
+  50              	        e_stmvsprw  16(sp)                  /* Saves CR, LR, CTR, XER.      */
+  51              	        e_stmvgprw  32(sp)                  /* Saves GPR0, GPR3...GPR12.    */
+  52              	.endm
+  53              	
+  54              	/* Context restore for critical class interrupt.*/
+  55              	.macro RESTORE_CONTEXT_CRITICAL
+  56              	        e_lmvgprw   32(sp)                  /* Restores GPR0, GPR3...GPR12.    */
+  57              	        e_lmvsprw   16(sp)                  /* Restores CR, LR, CTR, XER.      */
+  58              	        e_lmvcsrrw   8(sp)                  /* Restores PC, MSR (CSRR0, CSRR1).*/
+  59              	        e_addi      sp, sp, 80              /* Back to the previous frame.     */
+  60              	.endm
+  61              	
+  62              	/* Context save for Machine Check class interrupt.*/
+  63              	.macro SAVE_CONTEXT_MACHINE_CHECK
+  64              	        e_stwu			sp, -80(sp)			/* Size of the extctx structure.*/
+  65              	        e_stmvmcsrrw	8(sp)				/* Saves PC, MSR (MCSRR0, MCSRR1).*/
+  66              	        e_stmvsprw		16(sp)				/* Saves CR, LR, CTR, XER.      */
+  67              	        e_stmvgprw		32(sp)				/* Saves GPR0, GPR3...GPR12.    */
+  68              	.endm
+  69              	
+  70              	/* Context restore for Machine Check class interrupt.*/
+  71              	.macro RESTORE_MACHINE_CHECK
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 4
+
+
+  72              	        e_lmvgprw		32(sp)				/* Restores GPR0, GPR3...GPR12.    */
+  73              	        e_lmvsprw		16(sp)				/* Restores CR, LR, CTR, XER.      */
+  74              	        e_lmvmcsrrw		8(sp)				/* Restores PC, MSR (MCSRR0, MCSRR1).*/
+  75              	        e_addi			sp, sp, 80			/* Back to the previous frame.     */
+  76              	.endm
+  77              	
+  78              	/*
+  79              	 * Prepare SRR0 and SRR1 registers as callback's parameters, moreover do some stuff
+  80              	 * to calculate the returning address after handling IVOR exceptions, to avoid the
+  81              	 * exception is raised again. The returning address is the next instruction of SRR0.
+  82              	 */
+  83              	.macro LOAD_SSR0_SSR1_PLUS
+  84              			mfspr 		%r5,26				/* Load SRR0 -> r5 */
+  85              			se_mr		%r3,%r5				/* Prepare 1st parameter (SRR0) for the callback. */
+  86              			mfspr		%r4,27				/* Prepare 2nd parameter (SRR1) for the callback. */
+  87              	        se_lhz 		%r6,0(%r5)			/* Determine opcode @ SRR0 */
+  88              	        e_andi. 	%r7,%r6,0x9000
+  89              	        e_cmpli 	0x0,%r7,0x1000		/* Check bit 31,28 only */
+  90              	
+  91              			se_bc		0x1,0x0,0x4			/* Skip next instruction if CR is true. */
+  92              	        se_addi 	%r5,2				/* 0xx1 => 32 bit */
+  93              	
+  94              	        se_addi 	%r5,2				/* All others just 16 bit long */
+  95              	
+  96              	        e_stw       %r5, 8(sp)			/* Override the SRR0 previously saved in stack with the new one */
+  97              	.endm
+  98              	
+  99              	/*
+ 100              	 * Prepare SRR0 and SRR1 registers as callback's parameters.
+ 101              	 */
+ 102              	.macro LOAD_SSR0_SSR1
+ 103              			mfspr 		%r3,26				/* Prepare 1st parameter (SRR0) for the callback. */
+ 104              			mfspr		%r4,27				/* Prepare 2nd parameter (SRR1) for the callback. */
+ 105              	.endm
+ 106              	
+ 107              	 /*
+ 108              	 * Prepare CSRR0 and CSRR1 registers as callback's parameters.
+ 109              	 */
+ 110              	.macro LOAD_CSSR0_CSSR1
+ 111              			mfspr 		%r3,58				/* Prepare 1st parameter (CSRR0) for the callback. */
+ 112              			mfspr		%r4,59				/* Prepare 2nd parameter (CSRR1) for the callback. */
+ 113              	.endm
+ 114              	
+ 115              	/*
+ 116              	 * Prepare MCSRR0 and MCSRR1 registers as callback's parameters, moreover do some stuff
+ 117              	 * to calculate the returning address after handling IVOR1 exception, to avoid the
+ 118              	 * exception is raised again. The returning address is the next instruction of MCSRR0.
+ 119              	 */
+ 120              	.macro LOAD_MCSSR0_MCSSR1
+ 121              			mfspr 		%r5,570				/* Load MCSRR0 -> r5 */
+ 122              			se_mr		%r3,%r5				/* Prepare 1st parameter (MCSRR0) for the callback. */
+ 123              			mfspr		%r4,571				/* Prepare 2nd parameter (MCSRR1) for the callback. */
+ 124              	        se_lhz 		%r6,0(%r5)			/* Determine opcode @ MCSRR0 */
+ 125              	        e_andi. 	%r7,%r6,0x9000
+ 126              	        e_cmpli 	0x0,%r7,0x1000		/* Check bit 31,28 only */
+ 127              	
+ 128              			se_bc		0x1,0x0,0x4			/* Skip next instruction if CR is true. */
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 5
+
+
+ 129              	        se_addi 	%r5,2				/* 0xx1 => 32 bit */
+ 130              	
+ 131              	        se_addi 	%r5,2				/* All others just 16 bit long */
+ 132              	
+ 133              	        e_stw       %r5, 8(sp)			/* Override the MCSRR0 previously saved in stack with the new one 
+ 134              	.endm
+ 135              	
+ 136              	/*
+ 137              	 * Prepare DSRR0 and DSRR1 registers as callback's parameters, moreover do some stuff
+ 138              	 * to calculate the returning address after handling IVOR9 exception, to avoid the
+ 139              	 * exception is raised again. The returning address is the next instruction of MCSRR0.
+ 140              	 */
+ 141              	.macro LOAD_DSSR0_DSSR1
+ 142              			mfspr 		%r5,574				/* Load DSRR0 -> r5 */
+ 143              			se_mr		%r3,%r5				/* Prepare 1st parameter (DSRR0) for the callback. */
+ 144              			mfspr		%r4,575				/* Prepare 2nd parameter (DSRR1) for the callback. */
+ 145              	        se_lhz 		%r6,0(%r5)			/* Determine opcode @ DSRR0 */
+ 146              	        e_andi. 	%r7,%r6,0x9000
+ 147              	        e_cmpli 	0x0,%r7,0x1000		/* Check bit 31,28 only */
+ 148              	
+ 149              			se_bc		0x1,0x0,0x4			/* Skip next instruction if CR is true. */
+ 150              	        se_addi 	%r5,2				/* 0xx1 => 32 bit */
+ 151              	
+ 152              	        se_addi 	%r5,2				/* All others just 16 bit long */
+ 153              	
+ 154              	        e_stw       %r5, 8(sp)			/* Override the DSRR0 previously saved in stack with the new one *
+ 155              	.endm
+ 156              	
+ 157              	
+ 158              	
+ 159              	#endif /* !defined(__DOXYGEN__) */
+ 160              	
+ 161              	#if (CORE_VARIANT == 0)
+ 162              	#include "ivor_z0.h"
+ 163              	#endif
+ 164              	
+ 165              	#if (CORE_VARIANT == 2)
+ 166              	#include "ivor_z2.h"
+ 167              	#endif
+ 168              	
+ 169              	#if (CORE_VARIANT == 3)
+ 170              	#include "ivor_z3.h"
+ 171              	#endif
+ 172              	
+ 173              	#if (CORE_VARIANT == 4)
+ 174              	#include "ivor_z4.h"
+   1              	/*
+ 175              	#endif
+  35              	
+  36              	#if !defined(__DOXYGEN__)
+  37              	
+  38              	#if (OSAL_OS_ENABLE == FALSE)
+  39              	
+  40              	        .section    .handlers, "axv"
+  41              	_VLE
+  42              	
+  43              	        /*
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 6
+
+
+  44              	         * _IVOR0 handler (Critical input Interrupt).
+  45              	         */
+  46              	#if IVOR0_HANDLER
+  47              	        .align      4
+  48              	        .globl      _IVOR0
+  49              	        .type       _IVOR0, @function
+  50              	_IVOR0:
+  51              	        SAVE_CONTEXT_CRITICAL
+  52              	
+  53              			LOAD_CSSR0_CSSR1
+  54              	
+  55              			e_bl		_ivor0_callback		/* Branch to the proper callback*/
+  56              	
+  57              	        RESTORE_CONTEXT_CRITICAL
+  58              	        se_rfci
+  59              	#endif
+  60              	
+  61              	        /*
+  62              	         * _IVOR1 handler (Machine Check Interrupt).
+  63              	         */
+  64              	#if IVOR1_HANDLER
+  65              	        .align      4
+  66              	        .globl      _IVOR1
+  67              	        .type       _IVOR1, @function
+  68              	_IVOR1:
+  69              	        SAVE_CONTEXT_CRITICAL
+  70              	
+  71              			LOAD_IVOR1_EXC_REG
+  72              	
+  73              			e_bl		_ivor1_callback		/* Branch to the proper callback*/
+  74              	
+  75              	        RESTORE_CONTEXT_CRITICAL
+  76              			
+  77              	        RET_IVOR1
+  78              	#endif
+  79              	
+  80              	        /*
+  81              	         * _IVOR2 handler (Data Storage Interrupt).
+  82              	         */
+  83              	#if IVOR2_HANDLER
+  84              	        .align      4
+  85              	        .globl      _IVOR2
+  86              	        .type       _IVOR2, @function
+  87              	_IVOR2:
+  88              	        SAVE_CONTEXT
+  89              	
+  90              			LOAD_SSR0_SSR1_PLUS
+  91              	
+  92              			e_bl		_ivor2_callback		/* Branch to the proper callback*/
+  93              	
+  94              	        RESTORE_CONTEXT
+  95              	        se_rfi
+  96              	#endif
+  97              	
+  98              	        /*
+  99              	         * _IVOR3 handler (Instruction Storage Interrupt).
+ 100              	         */
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 7
+
+
+ 101              	#if IVOR3_HANDLER
+ 102              	        .align      4
+ 103              	        .globl      _IVOR3
+ 104              	        .type       _IVOR3, @function
+ 105              	_IVOR3:
+ 106              	        SAVE_CONTEXT
+ 107              	
+ 108              			LOAD_SSR0_SSR1_PLUS
+ 109              	
+ 110              			e_bl		_ivor3_callback		/* Branch to the proper callback*/
+ 111              	
+ 112              	        RESTORE_CONTEXT
+ 113              	        se_rfi
+ 114              	#endif
+ 115              	
+ 116              	#if (CORE_SUPPORTS_DECREMENTER == 1)
+ 117              	        /*
+ 118              	         * _IVOR10 handler (Book-E decrementer).
+ 119              	         */
+ 120              	        .align      4
+ 121              	        .globl      _IVOR10
+ 122              	        .type       _IVOR10, @function
+ 123              	_IVOR10:
+ 124              	#if (BOOT_CORE0 == 1)
+ 125              	_C0_IVOR10:
+ 126              	#endif
+ 127              	        SAVE_CONTEXT
+ 127 0000 182106B0 	>  e_stwu sp,-80(sp)
+ 127 0004 18811108 	>  e_stmvsrrw 8(sp)
+ 127 0008 18211110 	>  e_stmvsprw 16(sp)
+ 127 000c 18011120 	>  e_stmvgprw 32(sp)
+ 128              	
+ 129              	        /* Reset DIE bit in TSR register.*/
+ 130 0010 7061E000 	        e_lis       %r3, 0x0800             /* DIS bit mask.                */
+ 131 0014 7C7053A6 	        mtspr       336, %r3                /* TSR register.                */
+ 132              	
+ 133              	        /* Restoring pre-IRQ MSR register value.*/
+ 134 0018 7C1B02A6 	        mfSRR1      %r0
+ 135              	
+ 136              	        /* No preemption, keeping EE disabled.*/
+ 137 001c 6100     	        se_bclri    %r0, 16                 /* EE = bit 16.                 */
+ 138 001e 7C000124 	        mtMSR       %r0
+ 139              	
+ 140              	        RESTORE_CONTEXT
+ 140 0022 18011020 	>  e_lmvgprw 32(sp)
+ 140 0026 18211010 	>  e_lmvsprw 16(sp)
+ 140 002a 18811008 	>  e_lmvsrrw 8(sp)
+ 140 002e 18218050 	>  e_addi sp,sp,80
+ 141 0032 0008     	        se_rfi
+ 142              	#endif /* CORE_SUPPORTS_DECREMENTER */
+ 143              	
+ 144              	        /*
+ 145              	         * _IVOR4 handler (Book-E external interrupt).
+ 146              	         */
+ 147 0034 44004400 	        .align      4
+ 147      44004400 
+ 147      44004400 
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 8
+
+
+ 148              	        .globl      _IVOR4
+ 149              	        .type       _IVOR4, @function
+ 150              	_IVOR4:
+ 151              	        SAVE_CONTEXT
+ 151 0040 182106B0 	>  e_stwu sp,-80(sp)
+ 151 0044 18811108 	>  e_stmvsrrw 8(sp)
+ 151 0048 18211110 	>  e_stmvsprw 16(sp)
+ 151 004c 18011120 	>  e_stmvgprw 32(sp)
+ 152              	
+ 153              	        /* Software vector address from the INTC register.*/
+ 154 0050 707FE7F4 	        e_lis       %r3, HI(INTC_IACKR_BASE) /*IACKR register address.      */
+ 155 0054 7070C010 	        e_or2i      %r3, LO(INTC_IACKR_BASE)
+ 156 0058 C033     	        se_lwz      %r3, 0(%r3)             /* IACKR register value.        */
+ 157 005a C033     	        se_lwz      %r3, 0(%r3)
+ 158 005c 00B3     	        se_mtCTR    %r3                     /* Software handler address.    */
+ 159              	
+ 160              	        /* Restoring pre-IRQ MSR register value.*/
+ 161 005e 7C1B02A6 	        mfSRR1      %r0
+ 162              	        /* No preemption, keeping EE disabled.*/
+ 163 0062 6100     	        se_bclri    %r0, 16                 /* EE = bit 16.                 */
+ 164 0064 7C000124 	        mtMSR       %r0
+ 165              	
+ 166              	#if (OSAL_ENABLE_IRQ_PREEMPTION == TRUE)
+ 167              	        /* Allows preemption while executing the software handler.*/
+ 168              	        wrteei      1
+ 169              	#endif /* OSAL_ENABLE_IRQ_PREEMPTION */
+ 170              	
+ 171              	        /* Executes the software handler.*/
+ 172 0068 0007     	        se_bctrl
+ 173              	
+ 174              	#if (OSAL_ENABLE_IRQ_PREEMPTION == TRUE)
+ 175              	        /* Prevents preemption again.*/
+ 176              	        wrteei      0
+ 177              	#endif /* OSAL_ENABLE_IRQ_PREEMPTION */
+ 178              	
+ 179              	        /* Informs the INTC that the interrupt has been served.*/
+ 180 006a 7C0006AC 	        mbar        0
+ 181 006e 707FE7F4 	        e_lis       %r3, HI(INTC_EOIR_BASE)
+ 182 0072 7070C018 	        e_or2i      %r3, LO(INTC_EOIR_BASE)
+ 183 0076 D033     	        se_stw      %r3, 0(%r3)             /* Writing any value should do. */
+ 184              	
+ 185              	        RESTORE_CONTEXT
+ 185 0078 18011020 	>  e_lmvgprw 32(sp)
+ 185 007c 18211010 	>  e_lmvsprw 16(sp)
+ 185 0080 18811008 	>  e_lmvsrrw 8(sp)
+ 185 0084 18218050 	>  e_addi sp,sp,80
+ 186 0088 0008     	        se_rfi
+ 187              	
+ 188              	#if (BOOT_CORE0 == 1)
+ 189              	        /*
+ 190              	         * _C0_IVOR4 handler (Book-E external interrupt).
+ 191              	         */
+ 192              	        .align      4
+ 193              	        .globl      _C0_IVOR4
+ 194              	        .type       _C0_IVOR4, @function
+ 195              	_C0_IVOR4:
+ 196              	        SAVE_CONTEXT
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 9
+
+
+ 197              	
+ 198              	        /* Software vector address from the INTC register.*/
+ 199              	        e_lis       %r3, HI(INTC_IACKR_BASE_0) /*IACKR register address.    */
+ 200              	        e_or2i      %r3, LO(INTC_IACKR_BASE_0)
+ 201              	        se_lwz      %r3, 0(%r3)             /* IACKR register value.        */
+ 202              	        se_lwz      %r3, 0(%r3)
+ 203              	        se_mtCTR    %r3                     /* Software handler address.    */
+ 204              	
+ 205              	        /* Restoring pre-IRQ MSR register value.*/
+ 206              	        mfSRR1      %r0
+ 207              	        /* No preemption, keeping EE disabled.*/
+ 208              	        se_bclri    %r0, 16                 /* EE = bit 16.                 */
+ 209              	        mtMSR       %r0
+ 210              	
+ 211              	#if (OSAL_ENABLE_IRQ_PREEMPTION == TRUE)
+ 212              	        /* Allows preemption while executing the software handler.*/
+ 213              	        wrteei      1
+ 214              	#endif /* OSAL_ENABLE_IRQ_PREEMPTION */
+ 215              	
+ 216              	        /* Executes the software handler.*/
+ 217              	        se_bctrl
+ 218              	
+ 219              	#if (OSAL_ENABLE_IRQ_PREEMPTION == TRUE)
+ 220              	        /* Prevents preemption again.*/
+ 221              	        wrteei      0
+ 222              	#endif /* OSAL_ENABLE_IRQ_PREEMPTION */
+ 223              	
+ 224              	        /* Informs the INTC that the interrupt has been served.*/
+ 225              	        mbar        0
+ 226              	        e_lis       %r3, HI(INTC_EOIR_BASE_0)
+ 227              	        e_or2i      %r3, LO(INTC_EOIR_BASE_0)
+ 228              	        se_stw      %r3, 0(%r3)             /* Writing any value should do. */
+ 229              	
+ 230              	        RESTORE_CONTEXT
+ 231              	        se_rfi
+ 232              	#endif /* BOOT_CORE0 */
+ 233              	
+ 234              	#if (BOOT_CORE1 == 1 && !defined (_SPC56ELxx_))
+ 235              	        /*
+ 236              	         * _C1_IVOR4 handler
+ 237              	         */
+ 238              	        .align      4
+ 239              	        .globl      _C1_IVOR4
+ 240              	        .type       _C1_IVOR4, @function
+ 241              	_C1_IVOR4:
+ 242              	        SAVE_CONTEXT
+ 243              	
+ 244              	        /* Software vector address from the INTC register.*/
+ 245              	        e_lis       %r3, HI(INTC_IACKR_BASE_1) /*IACKR register address.    */
+ 246              	        e_or2i      %r3, LO(INTC_IACKR_BASE_1)
+ 247              	        se_lwz      %r3, 0(%r3)             /* IACKR register value.        */
+ 248              	        se_lwz      %r3, 0(%r3)
+ 249              	        se_mtCTR    %r3                     /* Software handler address.    */
+ 250              	
+ 251              	        /* Restoring pre-IRQ MSR register value.*/
+ 252              	        mfSRR1      %r0
+ 253              	        /* No preemption, keeping EE disabled.*/
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 10
+
+
+ 254              	        se_bclri    %r0, 16                 /* EE = bit 16.                 */
+ 255              	        mtMSR       %r0
+ 256              	
+ 257              	#if (OSAL_ENABLE_IRQ_PREEMPTION == TRUE)
+ 258              	        /* Allows preemption while executing the software handler.*/
+ 259              	        wrteei      1
+ 260              	#endif /* OSAL_ENABLE_IRQ_PREEMPTION */
+ 261              	
+ 262              	        /* Executes the software handler.*/
+ 263              	        se_bctrl
+ 264              	
+ 265              	#if (OSAL_ENABLE_IRQ_PREEMPTION == TRUE)
+ 266              	        /* Prevents preemption again.*/
+ 267              	        wrteei      0
+ 268              	#endif /* OSAL_ENABLE_IRQ_PREEMPTION */
+ 269              	
+ 270              	        /* Informs the INTC that the interrupt has been served.*/
+ 271              	        mbar        0
+ 272              	        e_lis       %r3, HI(INTC_EOIR_BASE_1)
+ 273              	        e_or2i      %r3, LO(INTC_EOIR_BASE_1)
+ 274              	        se_stw      %r3, 0(%r3)             /* Writing any value should do. */
+ 275              	
+ 276              	        RESTORE_CONTEXT
+ 277              	        se_rfi
+ 278              	#endif /* BOOT_CORE1 */
+ 279              	
+ 280              	        /*
+ 281              	         * _IVOR5 handler (Alignement Exception).
+ 282              	         */
+ 283              	#if IVOR5_HANDLER
+ 284              	        .align      4
+ 285              	        .globl      _IVOR5
+ 286              	        .type       _IVOR5, @function
+ 287              	_IVOR5:
+ 288              	        SAVE_CONTEXT
+ 289              	
+ 290              			LOAD_SSR0_SSR1_PLUS
+ 291              	
+ 292              			e_bl		_ivor5_callback		/* Branch to the proper callback */
+ 293              	
+ 294              	        RESTORE_CONTEXT
+ 295              	        se_rfi
+ 296              	#endif
+ 297              	
+ 298              	        /*
+ 299              	         * _IVOR6 handler (Program Interrupt Exception).
+ 300              	         */
+ 301              	#if IVOR6_HANDLER
+ 302              	        .align      4
+ 303              	        .globl      _IVOR6
+ 304              	        .type       _IVOR6, @function
+ 305              	_IVOR6:
+ 306              	        SAVE_CONTEXT
+ 307              	
+ 308              			LOAD_SSR0_SSR1_PLUS
+ 309              	
+ 310              			e_bl		_ivor6_callback		/* Branch to the proper callback */
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 11
+
+
+ 311              	
+ 312              	        RESTORE_CONTEXT
+ 313              	        se_rfi
+ 314              	#endif
+ 315              	
+ 316              	        /*
+ 317              	         * _IVOR7 handler (Floating-Point Interrupt Exception).
+ 318              	         */
+ 319              	#if IVOR7_HANDLER
+ 320              	        .align      4
+ 321              	        .globl      _IVOR7
+ 322              	        .type       _IVOR7, @function
+ 323              	_IVOR7:
+ 324              	        SAVE_CONTEXT
+ 325              	
+ 326              			LOAD_SSR0_SSR1_PLUS
+ 327              	
+ 328              			e_bl		_ivor7_callback		/* Branch to the proper callback */
+ 329              	
+ 330              	        RESTORE_CONTEXT
+ 331              	        se_rfi
+ 332              	#endif
+ 333              	
+ 334              	        /*
+ 335              	         * _IVOR8 handler (System Call Interrupt Exception).
+ 336              	         */
+ 337              	#if IVOR8_HANDLER
+ 338              	        .align      4
+ 339              	        .globl      _IVOR8
+ 340              	        .type       _IVOR8, @function
+ 341              	_IVOR8:
+ 342              	        SAVE_CONTEXT
+ 343              	
+ 344              			LOAD_SSR0_SSR1
+ 345              	
+ 346              			e_bl		_ivor8_callback		/* Branch to the proper callback */
+ 347              	
+ 348              	        RESTORE_CONTEXT
+ 349              	        se_rfi
+ 350              	#endif
+ 351              	
+ 352              	        /*
+ 353              	         * _IVOR9 handler (Auxiliary Processor Unavailable or Debug Interrupt Exception).
+ 354              	         */
+ 355              	#if IVOR9_HANDLER
+ 356              	        .align      4
+ 357              	        .globl      _IVOR9
+ 358              	        .type       _IVOR9, @function
+ 359              	_IVOR9:
+ 360              	        SAVE_CONTEXT
+ 361              	
+ 362              			LOAD_IVOR9_EXC_REG
+ 363              	
+ 364              			e_bl		_ivor9_callback		/* Branch to the proper callback */
+ 365              	
+ 366              	        RESTORE_CONTEXT
+ 367              			
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 12
+
+
+ 368              	        RET_IVOR9
+ 369              	#endif
+ 370              	
+ 371              	        /*
+ 372              	         * _IVOR11 handler (Fixed Interval Timer Interrupt Exception).
+ 373              	         */
+ 374              	#if IVOR11_HANDLER
+ 375              	        .align      4
+ 376              	        .globl      _IVOR11
+ 377              	        .type       _IVOR11, @function
+ 378              	_IVOR11:
+ 379              	        SAVE_CONTEXT
+ 380              	
+ 381              			LOAD_SSR0_SSR1
+ 382              	
+ 383              			e_bl		_ivor11_callback		/* Branch to the proper callback */
+ 384              	#if 0
+ 385              	        /* Reset FIS bit in TSR register.*/
+ 386              	        e_lis       %r3, 0x0400             /* FIS bit mask.                */
+ 387              	        mtspr       336, %r3                /* TSR register.                */
+ 388              	
+ 389              	        /* Restoring pre-IRQ MSR register value.*/
+ 390              	        mfSRR1      %r0
+ 391              	
+ 392              	        /* No preemption, keeping EE disabled.*/
+ 393              	        se_bclri    %r0, 16                 /* EE = bit 16.                 */
+ 394              	        mtMSR       %r0
+ 395              	#endif
+ 396              	        RESTORE_CONTEXT
+ 397              	        se_rfi
+ 398              	#endif
+ 399              	
+ 400              	        /*
+ 401              	         * _IVOR12 handler (Watchdog Timer Interrupt Exception).
+ 402              	         */
+ 403              	#if IVOR12_HANDLER
+ 404              	        .align      4
+ 405              	        .globl      _IVOR12
+ 406              	        .type       _IVOR12, @function
+ 407              	_IVOR12:
+ 408              	        SAVE_CONTEXT
+ 409              	
+ 410              			LOAD_SSR0_SSR1
+ 411              	
+ 412              			e_bl		_ivor12_callback		/* Branch to the proper callback */
+ 413              	#if 0
+ 414              	        /* Reset WIS bit in TSR register.*/
+ 415              	        e_lis       %r3, 0x4000             /* WIS bit mask.                */
+ 416              	        mtspr       336, %r3                /* TSR register.                */
+ 417              	
+ 418              	        /* Restoring pre-IRQ MSR register value.*/
+ 419              	        mfSRR1      %r0
+ 420              	
+ 421              	        /* No preemption, keeping EE disabled.*/
+ 422              	        se_bclri    %r0, 16                 /* EE = bit 16.                 */
+ 423              	        mtMSR       %r0
+ 424              	#endif
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 13
+
+
+ 425              	        RESTORE_CONTEXT
+ 426              	        se_rfi
+ 427              	#endif
+ 428              	
+ 429              	        /*
+ 430              	         * _IVOR13 handler (Data TLB Error Interrupt Exception).
+ 431              	         */
+ 432              	#if IVOR13_HANDLER
+ 433              	        .align      4
+ 434              	        .globl      _IVOR13
+ 435              	        .type       _IVOR13, @function
+ 436              	_IVOR13:
+ 437              	        SAVE_CONTEXT
+ 438              	
+ 439              			LOAD_SSR0_SSR1_PLUS
+ 440              	
+ 441              			e_bl		_ivor13_callback		/* Branch to the proper callback */
+ 442              	
+ 443              	        RESTORE_CONTEXT
+ 444              	        se_rfi
+ 445              	#endif
+ 446              	
+ 447              	        /*
+ 448              	         * _IVOR14 handler (Instruction TLB Error Interrupt Exception).
+ 449              	         */
+ 450              	#if IVOR14_HANDLER
+ 451              	        .align      4
+ 452              	        .globl      _IVOR14
+ 453              	        .type       _IVOR14, @function
+ 454              	_IVOR14:
+ 455              	        SAVE_CONTEXT
+ 456              	
+ 457              			LOAD_SSR0_SSR1_PLUS
+ 458              	
+ 459              			e_bl		_ivor14_callback		/* Branch to the proper callback */
+ 460              	
+ 461              	        RESTORE_CONTEXT
+ 462              	        se_rfi
+ 463              	#endif
+ 464              	
+ 465              	        /*
+ 466              	         * _IVOR15 handler (Debug Interrupt Exception).
+ 467              	         */
+ 468              	#if IVOR15_HANDLER
+ 469              	        .align      4
+ 470              	        .globl      _IVOR15
+ 471              	        .type       _IVOR15, @function
+ 472              	_IVOR15:
+ 473              	        SAVE_CONTEXT_CRITICAL
+ 474              	
+ 475              			LOAD_CSSR0_CSSR1
+ 476              	
+ 477              			e_bl		_ivor15_callback		/* Branch to the proper callback */
+ 478              	
+ 479              	        RESTORE_CONTEXT_CRITICAL
+ 480              	
+ 481              	        se_rfci
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 14
+
+
+ 482              	#endif
+ 483              	
+ 484              	#if CORE_SUPPORTS_IVORS
+ 485 008a 44004400 	        .align      4
+ 485      4400
+ 486              	        .globl      _spr_init
+ 487              	        .type       _spr_init, @function
+ 488              	_spr_init:
+ 489              	
+ 490 0090 7060E000 	        e_lis       %r3, HI(_IVOR0)
+ 491 0094 7060C000 	        e_or2i      %r3, LO(_IVOR0)
+ 492 0098 7C7063A6 	        mtspr       400, %r3
+ 493              	
+ 494 009c 7060E000 	        e_lis       %r3, HI(_IVOR1)
+ 495 00a0 7060C000 	        e_or2i      %r3, LO(_IVOR1)
+ 496 00a4 7C7163A6 	        mtspr       401, %r3
+ 497              	
+ 498 00a8 7060E000 	        e_lis       %r3, HI(_IVOR2)
+ 499 00ac 7060C000 	        e_or2i      %r3, LO(_IVOR2)
+ 500 00b0 7C7263A6 	        mtspr       402, %r3
+ 501              	
+ 502 00b4 7060E000 	        e_lis       %r3, HI(_IVOR3)
+ 503 00b8 7060C000 	        e_or2i      %r3, LO(_IVOR3)
+ 504 00bc 7C7363A6 	        mtspr       403, %r3
+ 505              	
+ 506 00c0 7060E000 	        e_lis       %r3, HI(_IVOR4)
+ 507 00c4 7060C000 	        e_or2i      %r3, LO(_IVOR4)
+ 508 00c8 7C7463A6 	        mtspr       404, %r3
+ 509              	
+ 510 00cc 7060E000 	        e_lis       %r3, HI(_IVOR5)
+ 511 00d0 7060C000 	        e_or2i      %r3, LO(_IVOR5)
+ 512 00d4 7C7563A6 	        mtspr       405, %r3
+ 513              	
+ 514 00d8 7060E000 	        e_lis       %r3, HI(_IVOR6)
+ 515 00dc 7060C000 	        e_or2i      %r3, LO(_IVOR6)
+ 516 00e0 7C7663A6 	        mtspr       406, %r3
+ 517              	
+ 518 00e4 7060E000 	        e_lis       %r3, HI(_IVOR7)
+ 519 00e8 7060C000 	        e_or2i      %r3, LO(_IVOR7)
+ 520 00ec 7C7763A6 	        mtspr       407, %r3
+ 521              	
+ 522 00f0 7060E000 	        e_lis       %r3, HI(_IVOR8)
+ 523 00f4 7060C000 	        e_or2i      %r3, LO(_IVOR8)
+ 524 00f8 7C7863A6 	        mtspr       408, %r3
+ 525              	
+ 526 00fc 7060E000 	        e_lis       %r3, HI(_IVOR9)
+ 527 0100 7060C000 	        e_or2i      %r3, LO(_IVOR9)
+ 528 0104 7C7963A6 	        mtspr       409, %r3
+ 529              	
+ 530 0108 7060E000 	        e_lis       %r3, HI(_IVOR10)
+ 531 010c 7060C000 	        e_or2i      %r3, LO(_IVOR10)
+ 532 0110 7C7A63A6 	        mtspr       410, %r3
+ 533              	
+ 534 0114 7060E000 	        e_lis       %r3, HI(_IVOR11)
+ 535 0118 7060C000 	        e_or2i      %r3, LO(_IVOR11)
+ 536 011c 7C7B63A6 	        mtspr       411, %r3
+ 537              	
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 15
+
+
+ 538 0120 7060E000 	        e_lis       %r3, HI(_IVOR12)
+ 539 0124 7060C000 	        e_or2i      %r3, LO(_IVOR12)
+ 540 0128 7C7C63A6 	        mtspr       412, %r3
+ 541              	
+ 542 012c 7060E000 	        e_lis       %r3, HI(_IVOR13)
+ 543 0130 7060C000 	        e_or2i      %r3, LO(_IVOR13)
+ 544 0134 7C7D63A6 	        mtspr       413, %r3
+ 545              	
+ 546 0138 7060E000 	        e_lis       %r3, HI(_IVOR14)
+ 547 013c 7060C000 	        e_or2i      %r3, LO(_IVOR14)
+ 548 0140 7C7E63A6 	        mtspr       414, %r3
+ 549              	
+ 550 0144 7060E000 	        e_lis       %r3, HI(_IVOR15)
+ 551 0148 7060C000 	        e_or2i      %r3, LO(_IVOR15)
+ 552 014c 7C7F63A6 	        mtspr       415, %r3
+ 553              	
+ 554 0150 7060E000 	        e_lis       %r3, HI(_IVOR32)
+ 555 0154 7060C000 	        e_or2i      %r3, LO(_IVOR32)
+ 556 0158 7C7083A6 	        mtspr       528, %r3
+ 557              	
+ 558 015c 7060E000 	        e_lis       %r3, HI(_IVOR33)
+ 559 0160 7060C000 	        e_or2i      %r3, LO(_IVOR33)
+ 560 0164 7C7183A6 	        mtspr       529, %r3
+ 561              	
+ 562 0168 7060E000 	        e_lis       %r3, HI(_IVOR34)
+ 563 016c 7060C000 	        e_or2i      %r3, LO(_IVOR34)
+ 564 0170 7C7283A6 	        mtspr       530, %r3
+ 565              	
+ 566 0174 0004     	        se_blr
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccEp08c7.s 			page 16
+
+
+DEFINED SYMBOLS
+./components/spc56elxx_osal_component_rla/lib/src/ivor.s:123    .handlers:00000000 _IVOR10
+./components/spc56elxx_osal_component_rla/lib/src/ivor.s:150    .handlers:00000040 _IVOR4
+./components/spc56elxx_osal_component_rla/lib/src/ivor.s:488    .handlers:00000090 _spr_init
+
+UNDEFINED SYMBOLS
+_IVOR0
+_IVOR1
+_IVOR2
+_IVOR3
+_IVOR5
+_IVOR6
+_IVOR7
+_IVOR8
+_IVOR9
+_IVOR11
+_IVOR12
+_IVOR13
+_IVOR14
+_IVOR15
+_IVOR32
+_IVOR33
+_IVOR34

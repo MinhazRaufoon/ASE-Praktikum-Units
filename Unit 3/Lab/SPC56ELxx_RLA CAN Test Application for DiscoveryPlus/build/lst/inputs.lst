@@ -1,0 +1,42 @@
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccBIt7Cr.s 			page 1
+
+
+   1              		.file	"inputs.c"
+   2              		.section	".text","axv"
+   3              	.Ltext0:
+   4              		.cfi_sections	.debug_frame
+   5              	.Letext0:
+   6              		.section	.debug_line,"",@progbits
+   7              	.Ldebug_line0:
+   8              		.section	.debug_str,"MS",@progbits,1
+   9              	.LASF0:
+  10 0000 2E2F736F 		.string	"./source/inputs.c"
+  10      75726365 
+  10      2F696E70 
+  10      7574732E 
+  10      6300
+  11              	.LASF1:
+  12 0012 433A5C55 		.string	"C:\\Users\\ASE-Admin\\Desktop\\Final\\SPC56ELxx_RLA CAN Test Application for DiscoveryPlu
+  12      73657273 
+  12      5C415345 
+  12      2D41646D 
+  12      696E5C44 
+  13              	.LASF2:
+  14 0068 474E5520 		.ascii	"GNU C 4.9.4 20160726 (Sat May 27 11:09:55 CDT 2017      "
+  14      4320342E 
+  14      392E3420 
+  14      32303136 
+  14      30373236 
+  15 00a0 20202062 		.string	"   build.sh rev=gd8b6c20 s=F494 ELe200 -V release_gd8b6c20_build_Fed_ELe200_ML0) -mcall-s
+  15      75696C64 
+  15      2E736820 
+  15      7265763D 
+  15      67643862 
+  16              		.ident	"GCC: (GNU) 4.9.4 20160726 (Sat May 27 11:09:55 CDT 2017         build.sh rev=gd8b6c20 s=F4
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccBIt7Cr.s 			page 2
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 inputs.c
+
+NO UNDEFINED SYMBOLS

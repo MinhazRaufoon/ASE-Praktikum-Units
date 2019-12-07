@@ -1,0 +1,342 @@
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\cchwgkbw.s 			page 1
+
+
+   1              		.file	"spc5_lld.c"
+   2              		.section	".text","axv"
+   3              	.Ltext0:
+   4              		.cfi_sections	.debug_frame
+   5              		.section	.text.spc5LLDInit,"axv",@progbits
+   6              		.align 1
+   7              		.p2align 4,,15
+   8              		.globl spc5LLDInit
+   9              		.type	spc5LLDInit, @function
+  10              	spc5LLDInit:
+  11              	.LFB4:
+  12              		.file 1 "./components/spc56elxx_low_level_drivers_component_rla/lib/src/spc5_lld.c"
+  13              		.loc 1 48 0
+  14              		.cfi_startproc
+  15              		.loc 1 107 0
+  16              		.loc 1 72 0
+  17 0000 78000000 		e_b can_lld_init
+  18              	.LVL0:
+  19              		.cfi_endproc
+  20              	.LFE4:
+  21              		.size	spc5LLDInit, .-spc5LLDInit
+  22              		.section	".text","axv"
+  23              	.Letext0:
+  24              		.file 2 "./components/spc56elxx_low_level_drivers_component_rla/lib/include/can_lld.h"
+  25              		.section	.debug_info,"",@progbits
+  26              	.Ldebug_info0:
+  27 0000 000000A2 		.4byte	0xa2
+  28 0004 0002     		.2byte	0x2
+  29 0006 00000000 		.4byte	.Ldebug_abbrev0
+  30 000a 04       		.byte	0x4
+  31 000b 01       		.uleb128 0x1
+  32 000c 00000000 		.4byte	.LASF10
+  33 0010 01       		.byte	0x1
+  34 0011 00000000 		.4byte	.LASF11
+  35 0015 00000000 		.4byte	.LASF12
+  36 0019 00000000 		.4byte	.Ldebug_ranges0+0
+  37 001d 00000000 		.4byte	0
+  38 0021 00000000 		.4byte	0
+  39 0025 00000000 		.4byte	.Ldebug_line0
+  40 0029 02       		.uleb128 0x2
+  41 002a 01       		.byte	0x1
+  42 002b 06       		.byte	0x6
+  43 002c 00000000 		.4byte	.LASF0
+  44 0030 02       		.uleb128 0x2
+  45 0031 01       		.byte	0x1
+  46 0032 08       		.byte	0x8
+  47 0033 00000000 		.4byte	.LASF1
+  48 0037 02       		.uleb128 0x2
+  49 0038 02       		.byte	0x2
+  50 0039 05       		.byte	0x5
+  51 003a 00000000 		.4byte	.LASF2
+  52 003e 02       		.uleb128 0x2
+  53 003f 02       		.byte	0x2
+  54 0040 07       		.byte	0x7
+  55 0041 00000000 		.4byte	.LASF3
+  56 0045 02       		.uleb128 0x2
+  57 0046 04       		.byte	0x4
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\cchwgkbw.s 			page 2
+
+
+  58 0047 05       		.byte	0x5
+  59 0048 00000000 		.4byte	.LASF4
+  60 004c 02       		.uleb128 0x2
+  61 004d 04       		.byte	0x4
+  62 004e 07       		.byte	0x7
+  63 004f 00000000 		.4byte	.LASF5
+  64 0053 02       		.uleb128 0x2
+  65 0054 08       		.byte	0x8
+  66 0055 05       		.byte	0x5
+  67 0056 00000000 		.4byte	.LASF6
+  68 005a 02       		.uleb128 0x2
+  69 005b 08       		.byte	0x8
+  70 005c 07       		.byte	0x7
+  71 005d 00000000 		.4byte	.LASF7
+  72 0061 03       		.uleb128 0x3
+  73 0062 04       		.byte	0x4
+  74 0063 05       		.byte	0x5
+  75 0064 696E7400 		.string	"int"
+  76 0068 02       		.uleb128 0x2
+  77 0069 04       		.byte	0x4
+  78 006a 07       		.byte	0x7
+  79 006b 00000000 		.4byte	.LASF8
+  80 006f 02       		.uleb128 0x2
+  81 0070 04       		.byte	0x4
+  82 0071 07       		.byte	0x7
+  83 0072 00000000 		.4byte	.LASF9
+  84 0076 04       		.uleb128 0x4
+  85 0077 01       		.byte	0x1
+  86 0078 00000000 		.4byte	.LASF13
+  87 007c 01       		.byte	0x1
+  88 007d 30       		.byte	0x30
+  89 007e 01       		.byte	0x1
+  90 007f 00000000 		.4byte	.LFB4
+  91 0083 00000000 		.4byte	.LFE4
+  92 0087 02       		.byte	0x2
+  93 0088 71       		.byte	0x71
+  94 0089 00       		.sleb128 0
+  95 008a 01       		.byte	0x1
+  96 008b 0000009A 		.4byte	0x9a
+  97 008f 05       		.uleb128 0x5
+  98 0090 00000000 		.4byte	.LVL0
+  99 0094 01       		.byte	0x1
+ 100 0095 0000009A 		.4byte	0x9a
+ 101 0099 00       		.byte	0
+ 102 009a 06       		.uleb128 0x6
+ 103 009b 01       		.byte	0x1
+ 104 009c 00000000 		.4byte	.LASF14
+ 105 00a0 02       		.byte	0x2
+ 106 00a1 03B5     		.2byte	0x3b5
+ 107 00a3 01       		.byte	0x1
+ 108 00a4 01       		.byte	0x1
+ 109 00a5 00       		.byte	0
+ 110              		.section	.debug_abbrev,"",@progbits
+ 111              	.Ldebug_abbrev0:
+ 112 0000 01       		.uleb128 0x1
+ 113 0001 11       		.uleb128 0x11
+ 114 0002 01       		.byte	0x1
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\cchwgkbw.s 			page 3
+
+
+ 115 0003 25       		.uleb128 0x25
+ 116 0004 0E       		.uleb128 0xe
+ 117 0005 13       		.uleb128 0x13
+ 118 0006 0B       		.uleb128 0xb
+ 119 0007 03       		.uleb128 0x3
+ 120 0008 0E       		.uleb128 0xe
+ 121 0009 1B       		.uleb128 0x1b
+ 122 000a 0E       		.uleb128 0xe
+ 123 000b 55       		.uleb128 0x55
+ 124 000c 06       		.uleb128 0x6
+ 125 000d 11       		.uleb128 0x11
+ 126 000e 01       		.uleb128 0x1
+ 127 000f 52       		.uleb128 0x52
+ 128 0010 01       		.uleb128 0x1
+ 129 0011 10       		.uleb128 0x10
+ 130 0012 06       		.uleb128 0x6
+ 131 0013 00       		.byte	0
+ 132 0014 00       		.byte	0
+ 133 0015 02       		.uleb128 0x2
+ 134 0016 24       		.uleb128 0x24
+ 135 0017 00       		.byte	0
+ 136 0018 0B       		.uleb128 0xb
+ 137 0019 0B       		.uleb128 0xb
+ 138 001a 3E       		.uleb128 0x3e
+ 139 001b 0B       		.uleb128 0xb
+ 140 001c 03       		.uleb128 0x3
+ 141 001d 0E       		.uleb128 0xe
+ 142 001e 00       		.byte	0
+ 143 001f 00       		.byte	0
+ 144 0020 03       		.uleb128 0x3
+ 145 0021 24       		.uleb128 0x24
+ 146 0022 00       		.byte	0
+ 147 0023 0B       		.uleb128 0xb
+ 148 0024 0B       		.uleb128 0xb
+ 149 0025 3E       		.uleb128 0x3e
+ 150 0026 0B       		.uleb128 0xb
+ 151 0027 03       		.uleb128 0x3
+ 152 0028 08       		.uleb128 0x8
+ 153 0029 00       		.byte	0
+ 154 002a 00       		.byte	0
+ 155 002b 04       		.uleb128 0x4
+ 156 002c 2E       		.uleb128 0x2e
+ 157 002d 01       		.byte	0x1
+ 158 002e 3F       		.uleb128 0x3f
+ 159 002f 0C       		.uleb128 0xc
+ 160 0030 03       		.uleb128 0x3
+ 161 0031 0E       		.uleb128 0xe
+ 162 0032 3A       		.uleb128 0x3a
+ 163 0033 0B       		.uleb128 0xb
+ 164 0034 3B       		.uleb128 0x3b
+ 165 0035 0B       		.uleb128 0xb
+ 166 0036 27       		.uleb128 0x27
+ 167 0037 0C       		.uleb128 0xc
+ 168 0038 11       		.uleb128 0x11
+ 169 0039 01       		.uleb128 0x1
+ 170 003a 12       		.uleb128 0x12
+ 171 003b 01       		.uleb128 0x1
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\cchwgkbw.s 			page 4
+
+
+ 172 003c 40       		.uleb128 0x40
+ 173 003d 0A       		.uleb128 0xa
+ 174 003e 9742     		.uleb128 0x2117
+ 175 0040 0C       		.uleb128 0xc
+ 176 0041 01       		.uleb128 0x1
+ 177 0042 13       		.uleb128 0x13
+ 178 0043 00       		.byte	0
+ 179 0044 00       		.byte	0
+ 180 0045 05       		.uleb128 0x5
+ 181 0046 898201   		.uleb128 0x4109
+ 182 0049 00       		.byte	0
+ 183 004a 11       		.uleb128 0x11
+ 184 004b 01       		.uleb128 0x1
+ 185 004c 9542     		.uleb128 0x2115
+ 186 004e 0C       		.uleb128 0xc
+ 187 004f 31       		.uleb128 0x31
+ 188 0050 13       		.uleb128 0x13
+ 189 0051 00       		.byte	0
+ 190 0052 00       		.byte	0
+ 191 0053 06       		.uleb128 0x6
+ 192 0054 2E       		.uleb128 0x2e
+ 193 0055 00       		.byte	0
+ 194 0056 3F       		.uleb128 0x3f
+ 195 0057 0C       		.uleb128 0xc
+ 196 0058 03       		.uleb128 0x3
+ 197 0059 0E       		.uleb128 0xe
+ 198 005a 3A       		.uleb128 0x3a
+ 199 005b 0B       		.uleb128 0xb
+ 200 005c 3B       		.uleb128 0x3b
+ 201 005d 05       		.uleb128 0x5
+ 202 005e 27       		.uleb128 0x27
+ 203 005f 0C       		.uleb128 0xc
+ 204 0060 3C       		.uleb128 0x3c
+ 205 0061 0C       		.uleb128 0xc
+ 206 0062 00       		.byte	0
+ 207 0063 00       		.byte	0
+ 208 0064 00       		.byte	0
+ 209              		.section	.debug_aranges,"",@progbits
+ 210 0000 0000001C 		.4byte	0x1c
+ 211 0004 0002     		.2byte	0x2
+ 212 0006 00000000 		.4byte	.Ldebug_info0
+ 213 000a 04       		.byte	0x4
+ 214 000b 00       		.byte	0
+ 215 000c 0000     		.2byte	0
+ 216 000e 0000     		.2byte	0
+ 217 0010 00000000 		.4byte	.LFB4
+ 218 0014 00000004 		.4byte	.LFE4-.LFB4
+ 219 0018 00000000 		.4byte	0
+ 220 001c 00000000 		.4byte	0
+ 221              		.section	.debug_ranges,"",@progbits
+ 222              	.Ldebug_ranges0:
+ 223 0000 00000000 		.4byte	.LFB4
+ 224 0004 00000000 		.4byte	.LFE4
+ 225 0008 00000000 		.4byte	0
+ 226 000c 00000000 		.4byte	0
+ 227              		.section	.debug_line,"",@progbits
+ 228              	.Ldebug_line0:
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\cchwgkbw.s 			page 5
+
+
+ 229 0000 000000CB 		.section	.debug_str,"MS",@progbits,1
+ 229      00020000 
+ 229      00B00201 
+ 229      FB0E0D00 
+ 229      01010101 
+ 230              	.LASF6:
+ 231 0000 6C6F6E67 		.string	"long long int"
+ 231      206C6F6E 
+ 231      6720696E 
+ 231      7400
+ 232              	.LASF8:
+ 233 000e 756E7369 		.string	"unsigned int"
+ 233      676E6564 
+ 233      20696E74 
+ 233      00
+ 234              	.LASF5:
+ 235 001b 6C6F6E67 		.string	"long unsigned int"
+ 235      20756E73 
+ 235      69676E65 
+ 235      6420696E 
+ 235      7400
+ 236              	.LASF12:
+ 237 002d 433A5C55 		.string	"C:\\Users\\ASE-Lab\\Desktop\\SPC56ELxx_RLA CAN Test Application for DiscoveryPlus"
+ 237      73657273 
+ 237      5C415345 
+ 237      2D4C6162 
+ 237      5C446573 
+ 238              	.LASF7:
+ 239 007b 6C6F6E67 		.string	"long long unsigned int"
+ 239      206C6F6E 
+ 239      6720756E 
+ 239      7369676E 
+ 239      65642069 
+ 240              	.LASF1:
+ 241 0092 756E7369 		.string	"unsigned char"
+ 241      676E6564 
+ 241      20636861 
+ 241      7200
+ 242              	.LASF14:
+ 243 00a0 63616E5F 		.string	"can_lld_init"
+ 243      6C6C645F 
+ 243      696E6974 
+ 243      00
+ 244              	.LASF10:
+ 245 00ad 474E5520 		.ascii	"GNU C 4.9.4 20160726 (Sat May 27 11:09:55 CDT 2017      "
+ 245      4320342E 
+ 245      392E3420 
+ 245      32303136 
+ 245      30373236 
+ 246 00e5 20202062 		.string	"   build.sh rev=gd8b6c20 s=F494 ELe200 -V release_gd8b6c20_build_Fed_ELe200_ML0) -mcall-s
+ 246      75696C64 
+ 246      2E736820 
+ 246      7265763D 
+ 246      67643862 
+ 247              	.LASF11:
+ 248 01e6 2E2F636F 		.string	"./components/spc56elxx_low_level_drivers_component_rla/lib/src/spc5_lld.c"
+ 248      6D706F6E 
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\cchwgkbw.s 			page 6
+
+
+ 248      656E7473 
+ 248      2F737063 
+ 248      3536656C 
+ 249              	.LASF3:
+ 250 0230 73686F72 		.string	"short unsigned int"
+ 250      7420756E 
+ 250      7369676E 
+ 250      65642069 
+ 250      6E7400
+ 251              	.LASF0:
+ 252 0243 7369676E 		.string	"signed char"
+ 252      65642063 
+ 252      68617200 
+ 253              	.LASF4:
+ 254 024f 6C6F6E67 		.string	"long int"
+ 254      20696E74 
+ 254      00
+ 255              	.LASF2:
+ 256 0258 73686F72 		.string	"short int"
+ 256      7420696E 
+ 256      7400
+ 257              	.LASF13:
+ 258 0262 73706335 		.string	"spc5LLDInit"
+ 258      4C4C4449 
+ 258      6E697400 
+ 259              	.LASF9:
+ 260 026e 73697A65 		.string	"sizetype"
+ 260      74797065 
+ 260      00
+ 261              		.ident	"GCC: (GNU) 4.9.4 20160726 (Sat May 27 11:09:55 CDT 2017         build.sh rev=gd8b6c20 s=F4
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\cchwgkbw.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 spc5_lld.c
+C:\Users\ASE-Lab\AppData\Local\Temp\cchwgkbw.s:10     .text.spc5LLDInit:00000000 spc5LLDInit
+
+UNDEFINED SYMBOLS
+can_lld_init

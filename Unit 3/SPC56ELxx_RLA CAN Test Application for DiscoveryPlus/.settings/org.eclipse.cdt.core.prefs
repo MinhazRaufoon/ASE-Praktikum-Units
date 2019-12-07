@@ -1,6 +1,0 @@
-eclipse.preferences.version=1
-environment/project/com.st.tools.spc5.configuration.default/PATH/delimiter=;
-environment/project/com.st.tools.spc5.configuration.default/PATH/operation=prepend
-environment/project/com.st.tools.spc5.configuration.default/PATH/value=C\:\\SPC5Studio\\eclipse\\configuration\\org.eclipse.osgi\\1267\\0\\.cp\\gnutools;
-environment/project/com.st.tools.spc5.configuration.default/append=true
-environment/project/com.st.tools.spc5.configuration.default/appendContributed=true

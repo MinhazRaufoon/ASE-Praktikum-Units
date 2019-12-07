@@ -1,0 +1,683 @@
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 1
+
+
+   1              	# 1 "./components/spc56elxx_platform_component_rla/lib/src/boot.s"
+   1              	/*
+   0              	
+   0              	
+   2              	    SPC5 RLA - Copyright (C) 2015 STMicroelectronics
+   3              	
+   4              	    Licensed under the Apache License, Version 2.0 (the "License").
+   5              	    You may not use this file except in compliance with the License.
+   6              	    You may obtain a copy of the License at
+   7              	
+   8              	        http://www.apache.org/licenses/LICENSE-2.0
+   9              	
+  10              	    Unless required by applicable law or agreed to in writing, software
+  11              	    distributed under the License is distributed on an "AS IS" BASIS,
+  12              	    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13              	    See the License for the specific language governing permissions and
+  14              	    limitations under the License.
+  15              	*/
+  16              	
+  17              	/**
+  18              	 * @file    boot.s
+  19              	 * @brief   SPC56ELxx boot-related code.
+  20              	 *
+  21              	 * @addtogroup PPC_BOOT
+  22              	 * @{
+  23              	 */
+  24              	
+  25              	#include "boot.h"
+   1              	/*
+  26              	#include "toolchain.h"
+   1              	/*
+  27              	
+  28              	#if !defined(__DOXYGEN__)
+  29              	       /* BAM record.*/
+  30              	        .section    .boot, "axv"
+  31              	
+  32 0000 015A0000 	        .long       0x015A0000
+  33 0004 00000000 	        .long       _reset_address
+  34              	
+  35              	        /*
+  36              	         * Reset entry point for core0.
+  37              	         */
+  38              	        .align      2
+  39              	        .globl      _reset_address
+  40              	        .type       _reset_address, @function
+  41              	_VLE
+  42              	_reset_address:
+  43              	#if BOOT_PERFORM_CORE_INIT
+  44 0008 78000021 	        e_bl        _tlballoc
+  45 000c 780001D5 	        e_bl        _ramclear
+  46 0010 78000275 	        e_bl        _regclear
+  47 0014 780002D9 	        e_bl        _tlb0alloc
+  48              	#endif /* BOOT_PERFORM_CORE_INIT */
+  49 0018 78000349 	        e_bl        _iv0init
+  50              	
+  51              	#if BOOT_RELOCATE_IN_RAM
+  52              	        /*
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 2
+
+
+  53              	         * Image relocation in RAM.
+  54              	         */
+  55              	        e_lis       %r4, HI(__ram_reloc_start__)
+  56              	        e_or2i      %r4, LO(__ram_reloc_start__)
+  57              	        e_lis       %r5, HI(__ram_reloc_dest__)
+  58              	        e_or2i      %r5, LO(__ram_reloc_dest__)
+  59              	        e_lis       %r6, HI(__ram_reloc_end__)
+  60              	        e_or2i      %r6, LO(__ram_reloc_end__)
+  61              	.relloop:
+  62              	        cmpl        cr0, %r4, %r6
+  63              	        se_bge      .relend
+  64              	        se_lwz      %r7, 0(%r4)
+  65              	        se_addi     %r4, 4
+  66              	        se_stw      %r7, 0(%r5)
+  67              	        se_addi     %r5, 4
+  68              	        se_b        .relloop
+  69              	.relend:
+  70              	        e_lis       %r3, HI(_boot_address)
+  71              	        e_or2i      %r3, LO(_boot_address)
+  72              	        mtctr       %r3
+  73              	        se_bctrl
+  74              	#else
+  75 001c 78000000 	        e_b         _boot_address
+  76              	#endif /* BOOT_RELOCATE_IN_RAM */
+  77              	
+  78              	#if (BOOT_CORE1 == 1)
+  79              	        /*
+  80              	         * Reset entry point for core1.
+  81              	         */
+  82              	        .align      2
+  83              	        .globl      _reset_address1
+  84              	        .type       _reset_address1, @function
+  85              	_VLE
+  86              	_reset_address1:
+  87              	        e_bl        _tlballoc
+  88              	        e_bl        _tlb0alloc
+  89              	        e_bl        _iv1init
+  90              	
+  91              	        e_lis       %r3, HI(_boot_address1)
+  92              	        e_or2i      %r3, LO(_boot_address1)
+  93              	        mtctr       %r3
+  94              	        se_bctrl
+  95              	#endif /* BOOT_CORE1 */
+  96              	
+  97              	        .align      2
+  98              	_ramcode:
+  99 0020 7C0007A4 	        tlbwe
+ 100 0024 0001     	        se_isync
+ 101 0026 0004     	        se_blr
+ 102              	
+ 103              	        /*
+ 104              	         * TLBs (except TLB0) invalidation and allocation.
+ 105              	         */
+ 106              	        .align      2
+ 107              	_tlballoc:
+ 108              	        /*
+ 109              	         * Invalidating all TLBs except TLB0.
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 3
+
+
+ 110              	         */
+ 111 0028 7060E000 	        e_lis       %r3, 0
+ 112 002c 7C719BA6 	        mtspr       625, %r3        /* MAS1 */
+ 113 0030 7C729BA6 	        mtspr       626, %r3        /* MAS2 */
+ 114 0034 7C739BA6 	        mtspr       627, %r3        /* MAS3 */
+ 115 0038 7062E001 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(1))
+ 116 003c 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 117 0040 7C0007A4 	        tlbwe
+ 118 0044 7062E002 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(2))
+ 119 0048 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 120 004c 7C0007A4 	        tlbwe
+ 121 0050 7062E003 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(3))
+ 122 0054 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 123 0058 7C0007A4 	        tlbwe
+ 124 005c 7062E004 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(4))
+ 125 0060 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 126 0064 7C0007A4 	        tlbwe
+ 127 0068 7062E005 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(5))
+ 128 006c 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 129 0070 7C0007A4 	        tlbwe
+ 130 0074 7062E006 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(6))
+ 131 0078 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 132 007c 7C0007A4 	        tlbwe
+ 133 0080 7062E007 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(7))
+ 134 0084 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 135 0088 7C0007A4 	        tlbwe
+ 136 008c 7062E008 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(8))
+ 137 0090 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 138 0094 7C0007A4 	        tlbwe
+ 139 0098 7062E009 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(9))
+ 140 009c 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 141 00a0 7C0007A4 	        tlbwe
+ 142 00a4 7062E00A 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(10))
+ 143 00a8 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 144 00ac 7C0007A4 	        tlbwe
+ 145 00b0 7062E00B 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(11))
+ 146 00b4 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 147 00b8 7C0007A4 	        tlbwe
+ 148 00bc 7062E00C 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(12))
+ 149 00c0 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 150 00c4 7C0007A4 	        tlbwe
+ 151 00c8 7062E00D 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(13))
+ 152 00cc 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 153 00d0 7C0007A4 	        tlbwe
+ 154 00d4 7062E00E 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(14))
+ 155 00d8 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 156 00dc 7C0007A4 	        tlbwe
+ 157 00e0 7062E00F 	        e_lis       %r3, HI(MAS0_TBLMAS_TBL | MAS0_ESEL(15))
+ 158 00e4 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 159 00e8 7C0007A4 	        tlbwe
+ 160              	
+ 161              	        /*
+ 162              	         * TLB1 allocated to internal RAM (0x40000000).
+ 163              	         */
+ 164 00ec 7062E001 	        e_lis       %r3, HI(TLB1_MAS0)
+ 165 00f0 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 166 00f4 7078E000 	        e_lis       %r3, HI(TLB1_MAS1)
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 4
+
+
+ 167 00f8 7060C400 	        e_or2i      %r3, LO(TLB1_MAS1)
+ 168 00fc 7C719BA6 	        mtspr       625, %r3        /* MAS1 */
+ 169 0100 7068E000 	        e_lis       %r3, HI(TLB1_MAS2)
+ 170 0104 7060C020 	        e_or2i      %r3, LO(TLB1_MAS2)
+ 171 0108 7C729BA6 	        mtspr       626, %r3        /* MAS2 */
+ 172 010c 7068E000 	        e_lis       %r3, HI(TLB1_MAS3)
+ 173 0110 7060C03F 	        e_or2i      %r3, LO(TLB1_MAS3)
+ 174 0114 7C739BA6 	        mtspr       627, %r3        /* MAS3 */
+ 175 0118 7C0007A4 	        tlbwe
+ 176              	
+ 177              	        /*
+ 178              	         * TLB2 allocated to internal Peripherals Bridge A.
+ 179              	         */
+ 180 011c 7062E002 	        e_lis       %r3, HI(TLB2_MAS0)
+ 181 0120 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 182 0124 7078E000 	        e_lis       %r3, HI(TLB2_MAS1)
+ 183 0128 7060C500 	        e_or2i      %r3, LO(TLB2_MAS1)
+ 184 012c 7C719BA6 	        mtspr       625, %r3        /* MAS1 */
+ 185 0130 7078E3F0 	        e_lis       %r3, HI(TLB2_MAS2)
+ 186 0134 7060C008 	        e_or2i      %r3, LO(TLB2_MAS2)
+ 187 0138 7C729BA6 	        mtspr       626, %r3        /* MAS2 */
+ 188 013c 7078E3F0 	        e_lis       %r3, HI(TLB2_MAS3)
+ 189 0140 7060C00F 	        e_or2i      %r3, LO(TLB2_MAS3)
+ 190 0144 7C739BA6 	        mtspr       627, %r3        /* MAS3 */
+ 191 0148 7C0007A4 	        tlbwe
+ 192              	
+ 193              	        /*
+ 194              	         * TLB3 allocated to internal Peripherals Bridge B.
+ 195              	         */
+ 196 014c 7062E003 	        e_lis       %r3, HI(TLB3_MAS0)
+ 197 0150 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 198 0154 7078E000 	        e_lis       %r3, HI(TLB3_MAS1)
+ 199 0158 7060C500 	        e_or2i      %r3, LO(TLB3_MAS1)
+ 200 015c 7C719BA6 	        mtspr       625, %r3        /* MAS1 */
+ 201 0160 707FE7E0 	        e_lis       %r3, HI(TLB3_MAS2)
+ 202 0164 7060C008 	        e_or2i      %r3, LO(TLB3_MAS2)
+ 203 0168 7C729BA6 	        mtspr       626, %r3        /* MAS2 */
+ 204 016c 707FE7E0 	        e_lis       %r3, HI(TLB3_MAS3)
+ 205 0170 7060C00F 	        e_or2i      %r3, LO(TLB3_MAS3)
+ 206 0174 7C739BA6 	        mtspr       627, %r3        /* MAS3 */
+ 207 0178 7C0007A4 	        tlbwe
+ 208              	
+ 209              	        /*
+ 210              	         * TLB4 allocated to on-platform peripherals.
+ 211              	         */
+ 212 017c 7062E004 	        e_lis       %r3, HI(TLB4_MAS0)
+ 213 0180 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 214 0184 7078E000 	        e_lis       %r3, HI(TLB4_MAS1)
+ 215 0188 7060C500 	        e_or2i      %r3, LO(TLB4_MAS1)
+ 216 018c 7C719BA6 	        mtspr       625, %r3        /* MAS1 */
+ 217 0190 7071E7F0 	        e_lis       %r3, HI(TLB4_MAS2)
+ 218 0194 7060C008 	        e_or2i      %r3, LO(TLB4_MAS2)
+ 219 0198 7C729BA6 	        mtspr       626, %r3        /* MAS2 */
+ 220 019c 7071E7F0 	        e_lis       %r3, HI(TLB4_MAS3)
+ 221 01a0 7060C00F 	        e_or2i      %r3, LO(TLB4_MAS3)
+ 222 01a4 7C739BA6 	        mtspr       627, %r3        /* MAS3 */
+ 223 01a8 7C0007A4 	        tlbwe
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 5
+
+
+ 224              	
+ 225              	        /*
+ 226              	         * TLB5 allocated to on-platform peripherals.
+ 227              	         */
+ 228 01ac 7062E005 	        e_lis       %r3, HI(TLB5_MAS0)
+ 229 01b0 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 230 01b4 7078E000 	        e_lis       %r3, HI(TLB5_MAS1)
+ 231 01b8 7060C500 	        e_or2i      %r3, LO(TLB5_MAS1)
+ 232 01bc 7C719BA6 	        mtspr       625, %r3        /* MAS1 */
+ 233 01c0 707FE7F0 	        e_lis       %r3, HI(TLB5_MAS2)
+ 234 01c4 7060C008 	        e_or2i      %r3, LO(TLB5_MAS2)
+ 235 01c8 7C729BA6 	        mtspr       626, %r3        /* MAS2 */
+ 236 01cc 707FE7F0 	        e_lis       %r3, HI(TLB5_MAS3)
+ 237 01d0 7060C00F 	        e_or2i      %r3, LO(TLB5_MAS3)
+ 238 01d4 7C739BA6 	        mtspr       627, %r3        /* MAS3 */
+ 239 01d8 7C0007A4 	        tlbwe
+ 240              	
+ 241              	#if (BOOT_CORE1 == 1)
+ 242              	        /*
+ 243              	         * TLB6 allocated to internal RAM (0x50000000).
+ 244              	         */
+ 245              	        e_lis       %r3, HI(TLB6_MAS0)
+ 246              	        mtspr       624, %r3        /* MAS0 */
+ 247              	        e_lis       %r3, HI(TLB6_MAS1)
+ 248              	        e_or2i      %r3, LO(TLB6_MAS1)
+ 249              	        mtspr       625, %r3        /* MAS1 */
+ 250              	        e_lis       %r3, HI(TLB6_MAS2)
+ 251              	        e_or2i      %r3, LO(TLB6_MAS2)
+ 252              	        mtspr       626, %r3        /* MAS2 */
+ 253              	        e_lis       %r3, HI(TLB6_MAS3)
+ 254              	        e_or2i      %r3, LO(TLB6_MAS3)
+ 255              	        mtspr       627, %r3        /* MAS3 */
+ 256              	        tlbwe
+ 257              	#endif /* BOOT_CORE1 */
+ 258              	
+ 259 01dc 0004     	        se_blr
+ 260              	
+ 261              	        /*
+ 262              	         * RAM clearing.
+ 263              	         */
+ 264 01de 4400     	        .align      2
+ 265              	_ramclear:
+ 266              	        /*
+ 267              	         * This device requires a write to all RAM location in order to
+ 268              	         * initialize the ECC detection hardware, this is going to slow
+ 269              	         * down the startup but there is no way around.
+ 270              	         */
+ 271 01e0 7C000278 	        xor         %r0, %r0, %r0
+ 272 01e4 7C210A78 	        xor         %r1, %r1, %r1
+ 273 01e8 7C421278 	        xor         %r2, %r2, %r2
+ 274 01ec 7C631A78 	        xor         %r3, %r3, %r3
+ 275 01f0 7C842278 	        xor         %r4, %r4, %r4
+ 276 01f4 7CA52A78 	        xor         %r5, %r5, %r5
+ 277 01f8 7CC63278 	        xor         %r6, %r6, %r6
+ 278 01fc 7CE73A78 	        xor         %r7, %r7, %r7
+ 279 0200 7D084278 	        xor         %r8, %r8, %r8
+ 280 0204 7D294A78 	        xor         %r9, %r9, %r9
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 6
+
+
+ 281 0208 7D4A5278 	        xor         %r10, %r10, %r10
+ 282 020c 7D6B5A78 	        xor         %r11, %r11, %r11
+ 283 0210 7D8C6278 	        xor         %r12, %r12, %r12
+ 284 0214 7DAD6A78 	        xor         %r13, %r13, %r13
+ 285 0218 7DCE7278 	        xor         %r14, %r14, %r14
+ 286 021c 7DEF7A78 	        xor         %r15, %r15, %r15
+ 287 0220 7E108278 	        xor         %r16, %r16, %r16
+ 288 0224 7E318A78 	        xor         %r17, %r17, %r17
+ 289 0228 7E529278 	        xor         %r18, %r18, %r18
+ 290 022c 7E739A78 	        xor         %r19, %r19, %r19
+ 291 0230 7E94A278 	        xor         %r20, %r20, %r20
+ 292 0234 7EB5AA78 	        xor         %r21, %r21, %r21
+ 293 0238 7ED6B278 	        xor         %r22, %r22, %r22
+ 294 023c 7EF7BA78 	        xor         %r23, %r23, %r23
+ 295 0240 7F18C278 	        xor         %r24, %r24, %r24
+ 296 0244 7F39CA78 	        xor         %r25, %r25, %r25
+ 297 0248 7F5AD278 	        xor         %r26, %r26, %r26
+ 298 024c 7F7BDA78 	        xor         %r27, %r27, %r27
+ 299 0250 7F9CE278 	        xor         %r28, %r28, %r28
+ 300 0254 7FBDEA78 	        xor         %r29, %r29, %r29
+ 301 0258 7FDEF278 	        xor         %r30, %r30, %r30
+ 302 025c 7FFFFA78 	        xor         %r31, %r31, %r31
+ 303 0260 7080E000 	        e_lis       %r4, HI(__ram_start__)
+ 304 0264 7080C000 	        e_or2i      %r4, LO(__ram_start__)
+ 305 0268 70A0E000 	        e_lis       %r5, HI(__ram_end__)
+ 306 026c 70A0C000 	        e_or2i      %r5, LO(__ram_end__)
+ 307              	.cleareccloop:
+ 308 0270 7C042840 	        cmplw       %r4, %r5
+ 309 0274 E006     	        se_bge      .cleareccend
+ 310 0276 1A040900 	        e_stmw      %r16, 0(%r4)
+ 311 027a 18848040 	        e_addi      %r4, %r4, 64
+ 312 027e E8F9     	        se_b        .cleareccloop
+ 313              	.cleareccend:
+ 314              	
+ 315 0280 0004     	        se_blr
+ 316              	
+ 317              	        /*
+ 318              	         * Special function registers clearing, required in order to avoid
+ 319              	         * possible problems with lockstep mode.
+ 320              	         */
+ 321 0282 4400     	        .align      2
+ 322              	_regclear:
+ 323 0284 7FEFF120 	        mtcrf       0xFF, %r31
+ 324 0288 7FE903A6 	        mtspr       9, %r31         /* CTR     */
+ 325 028c 7FF603A6 	        mtspr       22, %r31        /* DEC     */
+ 326 0290 7FFA03A6 	        mtspr       26, %r31        /* SRR0-1  */
+ 327 0294 7FFB03A6 	        mtspr       27, %r31
+ 328 0298 7FF60BA6 	        mtspr       54, %r31        /* DECAR   */
+ 329 029c 7FFA0BA6 	        mtspr       58, %r31        /* CSRR0-1 */
+ 330 02a0 7FFB0BA6 	        mtspr       59, %r31
+ 331 02a4 7FFD0BA6 	        mtspr       61, %r31        /* DEAR    */
+ 332 02a8 7FE043A6 	        mtspr       256, %r31       /* USPRG0  */
+ 333 02ac 7FF043A6 	        mtspr       272, %r31       /* SPRG1-7 */
+ 334 02b0 7FF143A6 	        mtspr       273, %r31
+ 335 02b4 7FF243A6 	        mtspr       274, %r31
+ 336 02b8 7FF343A6 	        mtspr       275, %r31
+ 337 02bc 7FF443A6 	        mtspr       276, %r31
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 7
+
+
+ 338 02c0 7FF543A6 	        mtspr       277, %r31
+ 339 02c4 7FF643A6 	        mtspr       278, %r31
+ 340 02c8 7FF743A6 	        mtspr       279, %r31
+ 341 02cc 7FFD43A6 	        mtspr       285, %r31       /* TBU     */
+ 342 02d0 7FFC43A6 	        mtspr       284, %r31       /* TBL     */
+ 343              	#if 0
+ 344              	        mtspr       318, %r31       /* DVC1-2  */
+ 345              	        mtspr       319, %r31
+ 346              	#endif
+ 347 02d4 7FF28BA6 	        mtspr       562, %r31       /* DBCNT */
+ 348 02d8 7FFA8BA6 	        mtspr       570, %r31       /* MCSRR0  */
+ 349 02dc 7FFB8BA6 	        mtspr       571, %r31       /* MCSRR1  */
+ 350 02e0 7FFC93A6 	        mtspr       604, %r31       /* SPRG8-9 */
+ 351 02e4 7FFD93A6 	        mtspr       605, %r31
+ 352              	
+ 353 02e8 0004     	        se_blr
+ 354              	
+ 355              	        /*
+ 356              	         * TLB0 re-allocation to flash.
+ 357              	         */
+ 358 02ea 4400     	        .align      2
+ 359              	_tlb0alloc:
+ 360              	        /*
+ 361              	         * Finally the TLB0 is re-allocated to flash, note, the final phase
+ 362              	         * is executed from RAM.
+ 363              	         */
+ 364 02ec 7062E000 	        e_lis       %r3, HI(TLB0_MAS0)
+ 365 02f0 7C709BA6 	        mtspr       624, %r3        /* MAS0 */
+ 366 02f4 7078E000 	        e_lis       %r3, HI(TLB0_MAS1)
+ 367 02f8 7060C580 	        e_or2i      %r3, LO(TLB0_MAS1)
+ 368 02fc 7C719BA6 	        mtspr       625, %r3        /* MAS1 */
+ 369 0300 7060E000 	        e_lis       %r3, HI(TLB0_MAS2)
+ 370 0304 7060C020 	        e_or2i      %r3, LO(TLB0_MAS2)
+ 371 0308 7C729BA6 	        mtspr       626, %r3        /* MAS2 */
+ 372 030c 7060E000 	        e_lis       %r3, HI(TLB0_MAS3)
+ 373 0310 7060C03F 	        e_or2i      %r3, LO(TLB0_MAS3)
+ 374 0314 7C739BA6 	        mtspr       627, %r3        /* MAS3 */
+ 375 0318 0084     	        se_mflr     %r4
+ 376 031a 70C0E000 	        e_lis       %r6, HI(_ramcode)
+ 377 031e 70C0C020 	        e_or2i      %r6, LO(_ramcode)
+ 378 0322 70E8E001 	        e_lis       %r7, HI(0x40010000)
+ 379 0326 00B7     	        se_mtctr    %r7
+ 380 0328 C036     	        se_lwz      %r3, 0(%r6)
+ 381 032a D037     	        se_stw      %r3, 0(%r7)
+ 382 032c C136     	        se_lwz      %r3, 4(%r6)
+ 383 032e D137     	        se_stw      %r3, 4(%r7)
+ 384 0330 C236     	        se_lwz      %r3, 8(%r6)
+ 385 0332 D237     	        se_stw      %r3, 8(%r7)
+ 386 0334 0007     	        se_bctrl
+ 387 0336 0094     	        se_mtlr     %r4
+ 388              	
+ 389              	        /*
+ 390              	         * Branch prediction enabled.
+ 391              	         */
+ 392 0338 70600201 	        e_li        %r3, BUCSR_DEFAULT
+ 393 033c 7C75FBA6 	        mtspr       1013, %r3       /* BUCSR */
+ 394              	
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 8
+
+
+ 395              	        /*
+ 396              	         * Cache invalidated and then enabled.
+ 397              	         */
+ 398 0340 4823     	        se_li       %r3, LICSR1_ICINV
+ 399 0342 7C73FBA6 	        mtspr       1011, %r3       /* LICSR1 */
+ 400 0346 7C73FAA6 	.inv:   mfspr       %r3, 1011       /* LICSR1 */
+ 401 034a 7060C802 	        e_and2i.    %r3, LICSR1_ICINV
+ 402 034e E2FC     	        se_bne      .inv
+ 403 0350 7060E000 	        e_lis       %r3, HI(LICSR1_DEFAULT)
+ 404 0354 7060C011 	        e_or2i      %r3, LO(LICSR1_DEFAULT)
+ 405 0358 7C73FBA6 	        mtspr       1011, %r3       /* LICSR1 */
+ 406              	
+ 407 035c 0004     	        se_blr
+ 408              	
+ 409              	        /*
+ 410              	         * Core 0 exception vectors initialization.
+ 411              	         */
+ 412 035e 4400     	        .align      2
+ 413              	_iv0init:
+ 414              	        /* MSR initialization.*/
+ 415 0360 7060E206 	        e_lis       %r3, HI(MSR_DEFAULT)
+ 416 0364 7062C000 	        e_or2i      %r3, LO(MSR_DEFAULT)
+ 417 0368 7C600124 	        mtMSR       %r3
+ 418              	
+ 419              	        /* IVPR initialization.*/
+ 420 036c 7060E000 	        e_lis       %r3, HI(__ivpr0_base__)
+ 421 0370 7060C000 	        e_or2i      %r3, LO(__ivpr0_base__)
+ 422 0374 7C7F0BA6 	        mtIVPR      %r3
+ 423              	
+ 424 0378 0004     	        se_blr
+ 425              	
+ 426              	#if (BOOT_CORE1 == 1)
+ 427              	        /*
+ 428              	         * Core 1 exception vectors initialization.
+ 429              	         */
+ 430              	        .align      2
+ 431              	_iv1init:
+ 432              	        /* MSR initialization.*/
+ 433              	        e_lis       %r3, HI(MSR_DEFAULT)
+ 434              	        e_or2i      %r3, LO(MSR_DEFAULT)
+ 435              	        mtMSR       %r3
+ 436              	
+ 437              	        /* IVPR initialization.*/
+ 438              	        e_lis       %r3, HI(__ivpr1_base__)
+ 439              	        e_or2i      %r3, LO(__ivpr1_base__)
+ 440              	        mtIVPR      %r3
+ 441              	
+ 442              	        se_blr
+ 443              	#endif /* BOOT_CORE1 */
+ 444              	
+ 445              	        /*
+ 446              	         * Core 0 exceptions vectors.
+ 447              	         */
+ 448              	        .section    .core0_ivors, "axv"
+ 449              	        .globl      IVORS
+ 450              	IVORS:
+ 451 0000 78000000 	        e_b         _IVOR0
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 9
+
+
+ 452 0004 44004400 	        .align      4
+ 452      44004400 
+ 452      44004400 
+ 453 0010 78000000 	        e_b         _IVOR1
+ 454 0014 44004400 	        .align      4
+ 454      44004400 
+ 454      44004400 
+ 455 0020 78000000 	        e_b         _IVOR2
+ 456 0024 44004400 	        .align      4
+ 456      44004400 
+ 456      44004400 
+ 457 0030 78000000 	        e_b         _IVOR3
+ 458 0034 44004400 	        .align      4
+ 458      44004400 
+ 458      44004400 
+ 459 0040 78000000 	        e_b         _IVOR4
+ 460 0044 44004400 	        .align      4
+ 460      44004400 
+ 460      44004400 
+ 461 0050 78000000 	        e_b         _IVOR5
+ 462 0054 44004400 	        .align      4
+ 462      44004400 
+ 462      44004400 
+ 463 0060 78000000 	        e_b         _IVOR6
+ 464 0064 44004400 	        .align      4
+ 464      44004400 
+ 464      44004400 
+ 465 0070 78000000 	        e_b         _IVOR7
+ 466 0074 44004400 	        .align      4
+ 466      44004400 
+ 466      44004400 
+ 467 0080 78000000 	        e_b         _IVOR8
+ 468 0084 44004400 	        .align      4
+ 468      44004400 
+ 468      44004400 
+ 469 0090 78000000 	        e_b         _IVOR9
+ 470 0094 44004400 	        .align      4
+ 470      44004400 
+ 470      44004400 
+ 471 00a0 78000000 	        e_b         _IVOR10
+ 472 00a4 44004400 	        .align      4
+ 472      44004400 
+ 472      44004400 
+ 473 00b0 78000000 	        e_b         _IVOR11
+ 474 00b4 44004400 	        .align      4
+ 474      44004400 
+ 474      44004400 
+ 475 00c0 78000000 	        e_b         _IVOR12
+ 476 00c4 44004400 	        .align      4
+ 476      44004400 
+ 476      44004400 
+ 477 00d0 78000000 	        e_b         _IVOR13
+ 478 00d4 44004400 	        .align      4
+ 478      44004400 
+ 478      44004400 
+ 479 00e0 78000000 	        e_b         _IVOR14
+ 480 00e4 44004400 	        .align      4
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 10
+
+
+ 480      44004400 
+ 480      44004400 
+ 481 00f0 78000000 	        e_b         _IVOR15
+ 482 00f4 44004400 	        .align      4
+ 482      44004400 
+ 482      44004400 
+ 483 0100 78000000 	        e_b         _IVOR32
+ 484 0104 44004400 	        .align      4
+ 484      44004400 
+ 484      44004400 
+ 485 0110 78000000 	        e_b         _IVOR33
+ 486 0114 44004400 	        .align      4
+ 486      44004400 
+ 486      44004400 
+ 487 0120 78000000 	        e_b         _IVOR34
+ 488              	
+ 489              	#if (BOOT_CORE1 == 1)
+ 490              	        /*
+ 491              	         * Core 1 exceptions vectors.
+ 492              	         */
+ 493              	        .section    .core1_ivors, "axv"
+ 494              	        .globl      C1_IVORS
+ 495              	C1_IVORS:
+ 496              	        e_b         _C1_IVOR0
+ 497              	        .align      4
+ 498              	        e_b         _C1_IVOR1
+ 499              	        .align      4
+ 500              	        e_b         _C1_IVOR2
+ 501              	        .align      4
+ 502              	        e_b         _C1_IVOR3
+ 503              	        .align      4
+ 504              	        e_b         _C1_IVOR4
+ 505              	        .align      4
+ 506              	        e_b         _C1_IVOR5
+ 507              	        .align      4
+ 508              	        e_b         _C1_IVOR6
+ 509              	        .align      4
+ 510              	        e_b         _C1_IVOR7
+ 511              	        .align      4
+ 512              	        e_b         _C1_IVOR8
+ 513              	        .align      4
+ 514              	        e_b         _C1_IVOR9
+ 515              	        .align      4
+ 516              	        e_b         _C1_IVOR10
+ 517              	        .align      4
+ 518              	        e_b         _C1_IVOR11
+ 519              	        .align      4
+ 520              	        e_b         _C1_IVOR12
+ 521              	        .align      4
+ 522              	        e_b         _C1_IVOR13
+ 523              	        .align      4
+ 524              	        e_b         _C1_IVOR14
+ 525              	        .align      4
+ 526              	        e_b         _C1_IVOR15
+ 527              	        .align      4
+ 528              	        e_b         _C1_IVOR32
+ 529              	        .align      4
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 11
+
+
+ 530              	        e_b         _C1_IVOR33
+ 531              	        .align      4
+ 532              	        e_b         _C1_IVOR34
+ 533              	#endif /* BOOT_CORE1 */
+ 534              	
+ 535              	        .section    .handlers, "axv"
+ 536              	
+ 537              	        /*
+ 538              	         * Unhandled exceptions handler for core 0.
+ 539              	         */
+ 540              	        .align      2
+ 541              	        .weak       _IVOR0,  _IVOR1,  _IVOR2,  _IVOR3
+ 542              	        .weak       _IVOR4,  _IVOR5,  _IVOR6,  _IVOR7
+ 543              	        .weak       _IVOR8,  _IVOR9,  _IVOR10, _IVOR11
+ 544              	        .weak       _IVOR12, _IVOR13, _IVOR14, _IVOR15
+ 545              	        .weak       _IVOR32, _IVOR33, _IVOR34
+ 546              	        .weak       _unhandled_exception0
+ 547              	        .type       _unhandled_exception0, @function
+ 548              	_IVOR0:
+ 549              	_IVOR1:
+ 550              	_IVOR2:
+ 551              	_IVOR3:
+ 552              	_IVOR4:
+ 553              	_IVOR5:
+ 554              	_IVOR6:
+ 555              	_IVOR7:
+ 556              	_IVOR8:
+ 557              	_IVOR9:
+ 558              	_IVOR10:
+ 559              	_IVOR11:
+ 560              	_IVOR12:
+ 561              	_IVOR13:
+ 562              	_IVOR14:
+ 563              	_IVOR15:
+ 564              	_IVOR32:
+ 565              	_IVOR33:
+ 566              	_IVOR34:
+ 567              	_unhandled_exception0:
+ 568 0000 E800     	        se_b        _unhandled_exception0
+GAS LISTING C:\Users\ASE-AD~1\AppData\Local\Temp\ccV2tKZU.s 			page 12
+
+
+DEFINED SYMBOLS
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:42     .boot:00000008 _reset_address
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:107    .boot:00000028 _tlballoc
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:265    .boot:000001e0 _ramclear
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:322    .boot:00000284 _regclear
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:359    .boot:000002ec _tlb0alloc
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:413    .boot:00000360 _iv0init
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:98     .boot:00000020 _ramcode
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:307    .boot:00000270 .cleareccloop
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:313    .boot:00000280 .cleareccend
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:400    .boot:00000346 .inv
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:450    .core0_ivors:00000000 IVORS
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:548    .handlers:00000000 _IVOR0
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:549    .handlers:00000000 _IVOR1
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:550    .handlers:00000000 _IVOR2
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:551    .handlers:00000000 _IVOR3
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:552    .handlers:00000000 _IVOR4
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:553    .handlers:00000000 _IVOR5
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:554    .handlers:00000000 _IVOR6
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:555    .handlers:00000000 _IVOR7
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:556    .handlers:00000000 _IVOR8
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:557    .handlers:00000000 _IVOR9
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:558    .handlers:00000000 _IVOR10
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:559    .handlers:00000000 _IVOR11
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:560    .handlers:00000000 _IVOR12
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:561    .handlers:00000000 _IVOR13
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:562    .handlers:00000000 _IVOR14
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:563    .handlers:00000000 _IVOR15
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:564    .handlers:00000000 _IVOR32
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:565    .handlers:00000000 _IVOR33
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:566    .handlers:00000000 _IVOR34
+./components/spc56elxx_platform_component_rla/lib/src/boot.s:567    .handlers:00000000 _unhandled_exception0
+
+UNDEFINED SYMBOLS
+_boot_address
+__ram_start__
+__ram_end__
+__ivpr0_base__

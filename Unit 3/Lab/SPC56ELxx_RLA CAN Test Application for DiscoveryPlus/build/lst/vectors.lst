@@ -1,0 +1,975 @@
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 1
+
+
+   1              	# 1 "./components/spc56elxx_irq_component_rla/lib/src/vectors.s"
+   1              	/*
+   0              	
+   0              	
+   2              	    SPC5 RLA - Copyright (C) 2015 STMicroelectronics
+   3              	
+   4              	    Licensed under the Apache License, Version 2.0 (the "License").
+   5              	    You may not use this file except in compliance with the License.
+   6              	    You may obtain a copy of the License at
+   7              	
+   8              	        http://www.apache.org/licenses/LICENSE-2.0
+   9              	
+  10              	    Unless required by applicable law or agreed to in writing, software
+  11              	    distributed under the License is distributed on an "AS IS" BASIS,
+  12              	    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13              	    See the License for the specific language governing permissions and
+  14              	    limitations under the License.
+  15              	*/
+  16              	
+  17              	/**
+  18              	 * @file    vectors.s
+  19              	 * @brief   SPC56ELxx vectors table.
+  20              	 *
+  21              	 * @addtogroup VECTORS
+  22              	 * @{
+  23              	 */
+  24              	
+  25              	/*
+  26              	 * Imports the configuration headers.
+  27              	 */
+  28              	#define _FROM_ASM_
+  29              	#include "platform.h"
+   1              	/*
+   2              	    SPC5 RLA - Copyright (C) 2015 STMicroelectronics
+   3              	
+   4              	    Licensed under the Apache License, Version 2.0 (the "License").
+   5              	    You may not use this file except in compliance with the License.
+   6              	    You may obtain a copy of the License at
+   7              	
+   8              	        http://www.apache.org/licenses/LICENSE-2.0
+   9              	
+  10              	    Unless required by applicable law or agreed to in writing, software
+  11              	    distributed under the License is distributed on an "AS IS" BASIS,
+  12              	    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13              	    See the License for the specific language governing permissions and
+  14              	    limitations under the License.
+  15              	*/
+  16              	
+  17              	/**
+  18              	 * @file    platform.h
+  19              	 * @brief   platform file.
+  20              	 */
+  21              	
+  22              	#ifndef _PLATFORM_H_
+  23              	#define _PLATFORM_H_
+  24              	
+  25              	#include "core.h"
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 2
+
+
+   1              	/*
+  26              	#include "toolchain.h"
+   1              	/*
+  27              	#include "intc.h"
+   1              	/*
+  28              	#if !defined(_FROM_ASM_)
+  30              	#include "irq_cfg.h"
+   1              	#ifndef _IRQ_CFG_H_
+  31              	
+  32              	#if !defined(__DOXYGEN__)
+  33              	
+  34              	        /* Software vectors table. The vectors are accessed from the IVOR4
+  35              	           handler only. In order to declare an interrupt handler just create
+  36              	           a function withe the same name of a vector, the symbol will
+  37              	           override the weak symbol declared here.*/
+  38              	
+  39              	        .section    .vectors, "axv"
+  40              	_VLE
+  41              	        .align		4
+  42              	        .globl      _vectors
+  43              	_vectors:
+  44 0000 00000000 	        .long       vector0,    vector1,    vector2,    vector3
+  44      00000000 
+  44      00000000 
+  44      00000000 
+  45 0010 00000000 	        .long       vector4,    vector5,    vector6,    vector7
+  45      00000000 
+  45      00000000 
+  45      00000000 
+  46 0020 00000000 	        .long       vector8,    vector9,    vector10,   vector11
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  47 0030 00000000 	        .long       vector12,   vector13,   vector14,   vector15
+  47      00000000 
+  47      00000000 
+  47      00000000 
+  48 0040 00000000 	        .long       vector16,   vector17,   vector18,   vector19
+  48      00000000 
+  48      00000000 
+  48      00000000 
+  49 0050 00000000 	        .long       vector20,   vector21,   vector22,   vector23
+  49      00000000 
+  49      00000000 
+  49      00000000 
+  50 0060 00000000 	        .long       vector24,   vector25,   vector26,   vector27
+  50      00000000 
+  50      00000000 
+  50      00000000 
+  51 0070 00000000 	        .long       vector28,   vector29,   vector30,   vector31
+  51      00000000 
+  51      00000000 
+  51      00000000 
+  52 0080 00000000 	        .long       vector32,   vector33,   vector34,   vector35
+  52      00000000 
+  52      00000000 
+  52      00000000 
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 3
+
+
+  53 0090 00000000 	        .long       vector36,   vector37,   vector38,   vector39
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  54 00a0 00000000 	        .long       vector40,   vector41,   vector42,   vector43
+  54      00000000 
+  54      00000000 
+  54      00000000 
+  55 00b0 00000000 	        .long       vector44,   vector45,   vector46,   vector47
+  55      00000000 
+  55      00000000 
+  55      00000000 
+  56 00c0 00000000 	        .long       vector48,   vector49,   vector50,   vector51
+  56      00000000 
+  56      00000000 
+  56      00000000 
+  57 00d0 00000000 	        .long       vector52,   vector53,   vector54,   vector55
+  57      00000000 
+  57      00000000 
+  57      00000000 
+  58 00e0 00000000 	        .long       vector56,   vector57,   vector58,   vector59
+  58      00000000 
+  58      00000000 
+  58      00000000 
+  59 00f0 00000000 	        .long       vector60,   vector61,   vector62,   vector63
+  59      00000000 
+  59      00000000 
+  59      00000000 
+  60 0100 00000000 	        .long       vector64,   vector65,   vector66,   vector67
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  61 0110 00000000 	        .long       vector68,   vector69,   vector70,   vector71
+  61      00000000 
+  61      00000000 
+  61      00000000 
+  62 0120 00000000 	        .long       vector72,   vector73,   vector74,   vector75
+  62      00000000 
+  62      00000000 
+  62      00000000 
+  63 0130 00000000 	        .long       vector76,   vector77,   vector78,   vector79
+  63      00000000 
+  63      00000000 
+  63      00000000 
+  64 0140 00000000 	        .long       vector80,   vector81,   vector82,   vector83
+  64      00000000 
+  64      00000000 
+  64      00000000 
+  65 0150 00000000 	        .long       vector84,   vector85,   vector86,   vector87
+  65      00000000 
+  65      00000000 
+  65      00000000 
+  66 0160 00000000 	        .long       vector88,   vector89,   vector90,   vector91
+  66      00000000 
+  66      00000000 
+  66      00000000 
+  67 0170 00000000 	        .long       vector92,   vector93,   vector94,   vector95
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 4
+
+
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  68 0180 00000000 	        .long       vector96,   vector97,   vector98,   vector99
+  68      00000000 
+  68      00000000 
+  68      00000000 
+  69 0190 00000000 	        .long       vector100,  vector101,  vector102,  vector103
+  69      00000000 
+  69      00000000 
+  69      00000000 
+  70 01a0 00000000 	        .long       vector104,  vector105,  vector106,  vector107
+  70      00000000 
+  70      00000000 
+  70      00000000 
+  71 01b0 00000000 	        .long       vector108,  vector109,  vector110,  vector111
+  71      00000000 
+  71      00000000 
+  71      00000000 
+  72 01c0 00000000 	        .long       vector112,  vector113,  vector114,  vector115
+  72      00000000 
+  72      00000000 
+  72      00000000 
+  73 01d0 00000000 	        .long       vector116,  vector117,  vector118,  vector119
+  73      00000000 
+  73      00000000 
+  73      00000000 
+  74 01e0 00000000 	        .long       vector120,  vector121,  vector122,  vector123
+  74      00000000 
+  74      00000000 
+  74      00000000 
+  75 01f0 00000000 	        .long       vector124,  vector125,  vector126,  vector127
+  75      00000000 
+  75      00000000 
+  75      00000000 
+  76 0200 00000000 	        .long       vector128,  vector129,  vector130,  vector131
+  76      00000000 
+  76      00000000 
+  76      00000000 
+  77 0210 00000000 	        .long       vector132,  vector133,  vector134,  vector135
+  77      00000000 
+  77      00000000 
+  77      00000000 
+  78 0220 00000000 	        .long       vector136,  vector137,  vector138,  vector139
+  78      00000000 
+  78      00000000 
+  78      00000000 
+  79 0230 00000000 	        .long       vector140,  vector141,  vector142,  vector143
+  79      00000000 
+  79      00000000 
+  79      00000000 
+  80 0240 00000000 	        .long       vector144,  vector145,  vector146,  vector147
+  80      00000000 
+  80      00000000 
+  80      00000000 
+  81 0250 00000000 	        .long       vector148,  vector149,  vector150,  vector151
+  81      00000000 
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 5
+
+
+  81      00000000 
+  81      00000000 
+  82 0260 00000000 	        .long       vector152,  vector153,  vector154,  vector155
+  82      00000000 
+  82      00000000 
+  82      00000000 
+  83 0270 00000000 	        .long       vector156,  vector157,  vector158,  vector159
+  83      00000000 
+  83      00000000 
+  83      00000000 
+  84 0280 00000000 	        .long       vector160,  vector161,  vector162,  vector163
+  84      00000000 
+  84      00000000 
+  84      00000000 
+  85 0290 00000000 	        .long       vector164,  vector165,  vector166,  vector167
+  85      00000000 
+  85      00000000 
+  85      00000000 
+  86 02a0 00000000 	        .long       vector168,  vector169,  vector170,  vector171
+  86      00000000 
+  86      00000000 
+  86      00000000 
+  87 02b0 00000000 	        .long       vector172,  vector173,  vector174,  vector175
+  87      00000000 
+  87      00000000 
+  87      00000000 
+  88 02c0 00000000 	        .long       vector176,  vector177,  vector178,  vector179
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  89 02d0 00000000 	        .long       vector180,  vector181,  vector182,  vector183
+  89      00000000 
+  89      00000000 
+  89      00000000 
+  90 02e0 00000000 	        .long       vector184,  vector185,  vector186,  vector187
+  90      00000000 
+  90      00000000 
+  90      00000000 
+  91 02f0 00000000 	        .long       vector188,  vector189,  vector190,  vector191
+  91      00000000 
+  91      00000000 
+  91      00000000 
+  92 0300 00000000 	        .long       vector192,  vector193,  vector194,  vector195
+  92      00000000 
+  92      00000000 
+  92      00000000 
+  93 0310 00000000 	        .long       vector196,  vector197,  vector198,  vector199
+  93      00000000 
+  93      00000000 
+  93      00000000 
+  94 0320 00000000 	        .long       vector200,  vector201,  vector202,  vector203
+  94      00000000 
+  94      00000000 
+  94      00000000 
+  95 0330 00000000 	        .long       vector204,  vector205,  vector206,  vector207
+  95      00000000 
+  95      00000000 
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 6
+
+
+  95      00000000 
+  96 0340 00000000 	        .long       vector208,  vector209,  vector210,  vector211
+  96      00000000 
+  96      00000000 
+  96      00000000 
+  97 0350 00000000 	        .long       vector212,  vector213,  vector214,  vector215
+  97      00000000 
+  97      00000000 
+  97      00000000 
+  98 0360 00000000 	        .long       vector216,  vector217,  vector218,  vector219
+  98      00000000 
+  98      00000000 
+  98      00000000 
+  99 0370 00000000 	        .long       vector220,  vector221,  vector222,  vector223
+  99      00000000 
+  99      00000000 
+  99      00000000 
+ 100 0380 00000000 	        .long       vector224,  vector225,  vector226,  vector227
+ 100      00000000 
+ 100      00000000 
+ 100      00000000 
+ 101 0390 00000000 	        .long       vector228,  vector229,  vector230,  vector231
+ 101      00000000 
+ 101      00000000 
+ 101      00000000 
+ 102 03a0 00000000 	        .long       vector232,  vector233,  vector234,  vector235
+ 102      00000000 
+ 102      00000000 
+ 102      00000000 
+ 103 03b0 00000000 	        .long       vector236,  vector237,  vector238,  vector239
+ 103      00000000 
+ 103      00000000 
+ 103      00000000 
+ 104 03c0 00000000 	        .long       vector240,  vector241,  vector242,  vector243
+ 104      00000000 
+ 104      00000000 
+ 104      00000000 
+ 105 03d0 00000000 	        .long       vector244,  vector245,  vector246,  vector247
+ 105      00000000 
+ 105      00000000 
+ 105      00000000 
+ 106 03e0 00000000 	        .long       vector248,  vector249,  vector250,  vector251
+ 106      00000000 
+ 106      00000000 
+ 106      00000000 
+ 107 03f0 00000000 	        .long       vector252,  vector253,  vector254,  vector255
+ 107      00000000 
+ 107      00000000 
+ 107      00000000 
+ 108              	
+ 109              	        .align      2
+ 110              	        
+ 111              	        .weak       vector0,    vector1,    vector2,    vector3
+ 112              	        .weak       vector4,    vector5,    vector6,    vector7
+ 113              	        .weak       vector8,    vector9,    vector10,   vector11
+ 114              	        .weak       vector12,   vector13,   vector14,   vector15
+ 115              	        .weak       vector16,   vector17,   vector18,   vector19
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 7
+
+
+ 116              	        .weak       vector20,   vector21,   vector22,   vector23
+ 117              	        .weak       vector24,   vector25,   vector26,   vector27
+ 118              	        .weak       vector28,   vector29,   vector30,   vector31
+ 119              	        .weak       vector32,   vector33,   vector34,   vector35
+ 120              	        .weak       vector36,   vector37,   vector38,   vector39
+ 121              	        .weak       vector40,   vector41,   vector42,   vector43
+ 122              	        .weak       vector44,   vector45,   vector46,   vector47
+ 123              	        .weak       vector48,   vector49,   vector50,   vector51
+ 124              	        .weak       vector52,   vector53,   vector54,   vector55
+ 125              	        .weak       vector56,   vector57,   vector58,   vector59
+ 126              	        .weak       vector60,   vector61,   vector62,   vector63
+ 127              	        .weak       vector64,   vector65,   vector66,   vector67
+ 128              	        .weak       vector68,   vector69,   vector70,   vector71
+ 129              	        .weak       vector72,   vector73,   vector74,   vector75
+ 130              	        .weak       vector76,   vector77,   vector78,   vector79
+ 131              	        .weak       vector80,   vector81,   vector82,   vector83
+ 132              	        .weak       vector84,   vector85,   vector86,   vector87
+ 133              	        .weak       vector88,   vector89,   vector90,   vector91
+ 134              	        .weak       vector92,   vector93,   vector94,   vector95
+ 135              	        .weak       vector96,   vector97,   vector98,   vector99
+ 136              	        .weak       vector100,  vector101,  vector102,  vector103
+ 137              	        .weak       vector104,  vector105,  vector106,  vector107
+ 138              	        .weak       vector108,  vector109,  vector110,  vector111
+ 139              	        .weak       vector112,  vector113,  vector114,  vector115
+ 140              	        .weak       vector116,  vector117,  vector118,  vector119
+ 141              	        .weak       vector120,  vector121,  vector122,  vector123
+ 142              	        .weak       vector124,  vector125,  vector126,  vector127
+ 143              	        .weak       vector128,  vector129,  vector130,  vector131
+ 144              	        .weak       vector132,  vector133,  vector134,  vector135
+ 145              	        .weak       vector136,  vector137,  vector138,  vector139
+ 146              	        .weak       vector140,  vector141,  vector142,  vector143
+ 147              	        .weak       vector144,  vector145,  vector146,  vector147
+ 148              	        .weak       vector148,  vector149,  vector150,  vector151
+ 149              	        .weak       vector152,  vector153,  vector154,  vector155
+ 150              	        .weak       vector156,  vector157,  vector158,  vector159
+ 151              	        .weak       vector160,  vector161,  vector162,  vector163
+ 152              	        .weak       vector164,  vector165,  vector166,  vector167
+ 153              	        .weak       vector168,  vector169,  vector170,  vector171
+ 154              	        .weak       vector172,  vector173,  vector174,  vector175
+ 155              	        .weak       vector176,  vector177,  vector178,  vector179
+ 156              	        .weak       vector180,  vector181,  vector182,  vector183
+ 157              	        .weak       vector184,  vector185,  vector186,  vector187
+ 158              	        .weak       vector188,  vector189,  vector190,  vector191
+ 159              	        .weak       vector192,  vector193,  vector194,  vector195
+ 160              	        .weak       vector196,  vector197,  vector198,  vector199
+ 161              	        .weak       vector200,  vector201,  vector202,  vector203
+ 162              	        .weak       vector204,  vector205,  vector206,  vector207
+ 163              	        .weak       vector208,  vector209,  vector210,  vector211
+ 164              	        .weak       vector212,  vector213,  vector214,  vector215
+ 165              	        .weak       vector216,  vector217,  vector218,  vector219
+ 166              	        .weak       vector220,  vector221,  vector222,  vector223
+ 167              	        .weak       vector224,  vector225,  vector226,  vector227
+ 168              	        .weak       vector228,  vector229,  vector230,  vector231
+ 169              	        .weak       vector232,  vector233,  vector234,  vector235
+ 170              	        .weak       vector236,  vector237,  vector238,  vector239
+ 171              	        .weak       vector240,  vector241,  vector242,  vector243
+ 172              	        .weak       vector244,  vector245,  vector246,  vector247
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 8
+
+
+ 173              	        .weak       vector248,  vector249,  vector250,  vector251
+ 174              	        .weak       vector252,  vector253,  vector254,  vector255
+ 175              	
+ 176              	vector0:
+ 177              	vector1:
+ 178              	vector2:
+ 179              	vector3:
+ 180              	vector4:
+ 181              	vector5:
+ 182              	vector6:
+ 183              	vector7:
+ 184              	vector8:
+ 185              	vector9:
+ 186              	vector10:
+ 187              	vector11:
+ 188              	vector12:
+ 189              	vector13:
+ 190              	vector14:
+ 191              	vector15:
+ 192              	vector16:
+ 193              	vector17:
+ 194              	vector18:
+ 195              	vector19:
+ 196              	vector20:
+ 197              	vector21:
+ 198              	vector22:
+ 199              	vector23:
+ 200              	vector24:
+ 201              	vector25:
+ 202              	vector26:
+ 203              	vector27:
+ 204              	vector28:
+ 205              	vector29:
+ 206              	vector30:
+ 207              	vector31:
+ 208              	vector32:
+ 209              	vector33:
+ 210              	vector34:
+ 211              	vector35:
+ 212              	vector36:
+ 213              	vector37:
+ 214              	vector38:
+ 215              	vector39:
+ 216              	vector40:
+ 217              	vector41:
+ 218              	vector42:
+ 219              	vector43:
+ 220              	vector44:
+ 221              	vector45:
+ 222              	vector46:
+ 223              	vector47:
+ 224              	vector48:
+ 225              	vector49:
+ 226              	vector50:
+ 227              	vector51:
+ 228              	vector52:
+ 229              	vector53:
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 9
+
+
+ 230              	vector54:
+ 231              	vector55:
+ 232              	vector56:
+ 233              	vector57:
+ 234              	vector58:
+ 235              	vector59:
+ 236              	vector60:
+ 237              	vector61:
+ 238              	vector62:
+ 239              	vector63:
+ 240              	vector64:
+ 241              	vector65:
+ 242              	vector66:
+ 243              	vector67:
+ 244              	vector68:
+ 245              	vector69:
+ 246              	vector70:
+ 247              	vector71:
+ 248              	vector72:
+ 249              	vector73:
+ 250              	vector74:
+ 251              	vector75:
+ 252              	vector76:
+ 253              	vector77:
+ 254              	vector78:
+ 255              	vector79:
+ 256              	vector80:
+ 257              	vector81:
+ 258              	vector82:
+ 259              	vector83:
+ 260              	vector84:
+ 261              	vector85:
+ 262              	vector86:
+ 263              	vector87:
+ 264              	vector88:
+ 265              	vector89:
+ 266              	vector90:
+ 267              	vector91:
+ 268              	vector92:
+ 269              	vector93:
+ 270              	vector94:
+ 271              	vector95:
+ 272              	vector96:
+ 273              	vector97:
+ 274              	vector98:
+ 275              	vector99:
+ 276              	vector100:
+ 277              	vector101:
+ 278              	vector102:
+ 279              	vector103:
+ 280              	vector104:
+ 281              	vector105:
+ 282              	vector106:
+ 283              	vector107:
+ 284              	vector108:
+ 285              	vector109:
+ 286              	vector110:
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 10
+
+
+ 287              	vector111:
+ 288              	vector112:
+ 289              	vector113:
+ 290              	vector114:
+ 291              	vector115:
+ 292              	vector116:
+ 293              	vector117:
+ 294              	vector118:
+ 295              	vector119:
+ 296              	vector120:
+ 297              	vector121:
+ 298              	vector122:
+ 299              	vector123:
+ 300              	vector124:
+ 301              	vector125:
+ 302              	vector126:
+ 303              	vector127:
+ 304              	vector128:
+ 305              	vector129:
+ 306              	vector130:
+ 307              	vector131:
+ 308              	vector132:
+ 309              	vector133:
+ 310              	vector134:
+ 311              	vector135:
+ 312              	vector136:
+ 313              	vector137:
+ 314              	vector138:
+ 315              	vector139:
+ 316              	vector140:
+ 317              	vector141:
+ 318              	vector142:
+ 319              	vector143:
+ 320              	vector144:
+ 321              	vector145:
+ 322              	vector146:
+ 323              	vector147:
+ 324              	vector148:
+ 325              	vector149:
+ 326              	vector150:
+ 327              	vector151:
+ 328              	vector152:
+ 329              	vector153:
+ 330              	vector154:
+ 331              	vector155:
+ 332              	vector156:
+ 333              	vector157:
+ 334              	vector158:
+ 335              	vector159:
+ 336              	vector160:
+ 337              	vector161:
+ 338              	vector162:
+ 339              	vector163:
+ 340              	vector164:
+ 341              	vector165:
+ 342              	vector166:
+ 343              	vector167:
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 11
+
+
+ 344              	vector168:
+ 345              	vector169:
+ 346              	vector170:
+ 347              	vector171:
+ 348              	vector172:
+ 349              	vector173:
+ 350              	vector174:
+ 351              	vector175:
+ 352              	vector176:
+ 353              	vector177:
+ 354              	vector178:
+ 355              	vector179:
+ 356              	vector180:
+ 357              	vector181:
+ 358              	vector182:
+ 359              	vector183:
+ 360              	vector184:
+ 361              	vector185:
+ 362              	vector186:
+ 363              	vector187:
+ 364              	vector188:
+ 365              	vector189:
+ 366              	vector190:
+ 367              	vector191:
+ 368              	vector192:
+ 369              	vector193:
+ 370              	vector194:
+ 371              	vector195:
+ 372              	vector196:
+ 373              	vector197:
+ 374              	vector198:
+ 375              	vector199:
+ 376              	vector200:
+ 377              	vector201:
+ 378              	vector202:
+ 379              	vector203:
+ 380              	vector204:
+ 381              	vector205:
+ 382              	vector206:
+ 383              	vector207:
+ 384              	vector208:
+ 385              	vector209:
+ 386              	vector210:
+ 387              	vector211:
+ 388              	vector212:
+ 389              	vector213:
+ 390              	vector214:
+ 391              	vector215:
+ 392              	vector216:
+ 393              	vector217:
+ 394              	vector218:
+ 395              	vector219:
+ 396              	vector220:
+ 397              	vector221:
+ 398              	vector222:
+ 399              	vector223:
+ 400              	vector224:
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 12
+
+
+ 401              	vector225:
+ 402              	vector226:
+ 403              	vector227:
+ 404              	vector228:
+ 405              	vector229:
+ 406              	vector230:
+ 407              	vector231:
+ 408              	vector232:
+ 409              	vector233:
+ 410              	vector234:
+ 411              	vector235:
+ 412              	vector236:
+ 413              	vector237:
+ 414              	vector238:
+ 415              	vector239:
+ 416              	vector240:
+ 417              	vector241:
+ 418              	vector242:
+ 419              	vector243:
+ 420              	vector244:
+ 421              	vector245:
+ 422              	vector246:
+ 423              	vector247:
+ 424              	vector248:
+ 425              	vector249:
+ 426              	vector250:
+ 427              	vector251:
+ 428              	vector252:
+ 429              	vector253:
+ 430              	vector254:
+ 431              	vector255:
+ 432              	
+ 433              	        .weak       _unhandled_irq
+ 434              	        .type       _unhandled_irq, @function
+ 435              	_unhandled_irq:
+ 436 0400 E800     	        se_b        _unhandled_irq
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 13
+
+
+DEFINED SYMBOLS
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:43     .vectors:00000000 _vectors
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:176    .vectors:00000400 vector0
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:177    .vectors:00000400 vector1
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:178    .vectors:00000400 vector2
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:179    .vectors:00000400 vector3
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:180    .vectors:00000400 vector4
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:181    .vectors:00000400 vector5
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:182    .vectors:00000400 vector6
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:183    .vectors:00000400 vector7
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:184    .vectors:00000400 vector8
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:185    .vectors:00000400 vector9
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:186    .vectors:00000400 vector10
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:187    .vectors:00000400 vector11
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:188    .vectors:00000400 vector12
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:189    .vectors:00000400 vector13
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:190    .vectors:00000400 vector14
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:191    .vectors:00000400 vector15
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:192    .vectors:00000400 vector16
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:193    .vectors:00000400 vector17
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:194    .vectors:00000400 vector18
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:195    .vectors:00000400 vector19
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:196    .vectors:00000400 vector20
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:197    .vectors:00000400 vector21
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:198    .vectors:00000400 vector22
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:199    .vectors:00000400 vector23
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:200    .vectors:00000400 vector24
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:201    .vectors:00000400 vector25
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:202    .vectors:00000400 vector26
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:203    .vectors:00000400 vector27
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:204    .vectors:00000400 vector28
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:205    .vectors:00000400 vector29
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:206    .vectors:00000400 vector30
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:207    .vectors:00000400 vector31
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:208    .vectors:00000400 vector32
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:209    .vectors:00000400 vector33
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:210    .vectors:00000400 vector34
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:211    .vectors:00000400 vector35
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:212    .vectors:00000400 vector36
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:213    .vectors:00000400 vector37
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:214    .vectors:00000400 vector38
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:215    .vectors:00000400 vector39
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:216    .vectors:00000400 vector40
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:217    .vectors:00000400 vector41
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:218    .vectors:00000400 vector42
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:219    .vectors:00000400 vector43
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:220    .vectors:00000400 vector44
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:221    .vectors:00000400 vector45
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:222    .vectors:00000400 vector46
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:223    .vectors:00000400 vector47
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:224    .vectors:00000400 vector48
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:225    .vectors:00000400 vector49
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:226    .vectors:00000400 vector50
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:227    .vectors:00000400 vector51
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:228    .vectors:00000400 vector52
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:229    .vectors:00000400 vector53
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:230    .vectors:00000400 vector54
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 14
+
+
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:231    .vectors:00000400 vector55
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:232    .vectors:00000400 vector56
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:233    .vectors:00000400 vector57
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:234    .vectors:00000400 vector58
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:235    .vectors:00000400 vector59
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:236    .vectors:00000400 Pit_Channel_1
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:237    .vectors:00000400 Pit_Channel_2
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:238    .vectors:00000400 vector62
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:239    .vectors:00000400 vector63
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:240    .vectors:00000400 vector64
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:241    .vectors:00000400 vector65
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:242    .vectors:00000400 vector66
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:243    .vectors:00000400 vector67
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:244    .vectors:00000400 vector68
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:245    .vectors:00000400 vector69
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:246    .vectors:00000400 vector70
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:247    .vectors:00000400 vector71
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:248    .vectors:00000400 vector72
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:249    .vectors:00000400 vector73
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:250    .vectors:00000400 vector74
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:251    .vectors:00000400 vector75
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:252    .vectors:00000400 vector76
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:253    .vectors:00000400 vector77
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:254    .vectors:00000400 vector78
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:255    .vectors:00000400 vector79
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:256    .vectors:00000400 vector80
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:257    .vectors:00000400 vector81
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:258    .vectors:00000400 vector82
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:259    .vectors:00000400 vector83
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:260    .vectors:00000400 vector84
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:261    .vectors:00000400 vector85
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:262    .vectors:00000400 vector86
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:263    .vectors:00000400 vector87
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:264    .vectors:00000400 vector88
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:265    .vectors:00000400 vector89
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:266    .vectors:00000400 vector90
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:267    .vectors:00000400 vector91
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:268    .vectors:00000400 vector92
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:269    .vectors:00000400 vector93
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:270    .vectors:00000400 vector94
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:271    .vectors:00000400 vector95
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:272    .vectors:00000400 vector96
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:273    .vectors:00000400 vector97
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:274    .vectors:00000400 vector98
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:275    .vectors:00000400 vector99
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:276    .vectors:00000400 vector100
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:277    .vectors:00000400 vector101
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:278    .vectors:00000400 vector102
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:279    .vectors:00000400 vector103
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:280    .vectors:00000400 vector104
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:281    .vectors:00000400 vector105
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:282    .vectors:00000400 vector106
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:283    .vectors:00000400 vector107
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:284    .vectors:00000400 vector108
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:285    .vectors:00000400 vector109
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:286    .vectors:00000400 vector110
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:287    .vectors:00000400 vector111
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 15
+
+
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:288    .vectors:00000400 vector112
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:289    .vectors:00000400 vector113
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:290    .vectors:00000400 vector114
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:291    .vectors:00000400 vector115
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:292    .vectors:00000400 vector116
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:293    .vectors:00000400 vector117
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:294    .vectors:00000400 vector118
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:295    .vectors:00000400 vector119
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:296    .vectors:00000400 vector120
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:297    .vectors:00000400 vector121
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:298    .vectors:00000400 vector122
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:299    .vectors:00000400 vector123
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:300    .vectors:00000400 vector124
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:301    .vectors:00000400 vector125
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:302    .vectors:00000400 vector126
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:303    .vectors:00000400 Pit_Channel_3
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:304    .vectors:00000400 vector128
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:305    .vectors:00000400 vector129
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:306    .vectors:00000400 vector130
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:307    .vectors:00000400 vector131
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:308    .vectors:00000400 vector132
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:309    .vectors:00000400 vector133
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:310    .vectors:00000400 vector134
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:311    .vectors:00000400 vector135
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:312    .vectors:00000400 vector136
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:313    .vectors:00000400 vector137
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:314    .vectors:00000400 vector138
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:315    .vectors:00000400 vector139
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:316    .vectors:00000400 vector140
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:317    .vectors:00000400 vector141
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:318    .vectors:00000400 vector142
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:319    .vectors:00000400 vector143
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:320    .vectors:00000400 vector144
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:321    .vectors:00000400 vector145
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:322    .vectors:00000400 vector146
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:323    .vectors:00000400 vector147
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:324    .vectors:00000400 vector148
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:325    .vectors:00000400 vector149
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:326    .vectors:00000400 vector150
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:327    .vectors:00000400 vector151
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:328    .vectors:00000400 vector152
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:329    .vectors:00000400 vector153
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:330    .vectors:00000400 vector154
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:331    .vectors:00000400 vector155
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:332    .vectors:00000400 vector156
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:333    .vectors:00000400 vector157
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:334    .vectors:00000400 vector158
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:335    .vectors:00000400 vector159
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:336    .vectors:00000400 vector160
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:337    .vectors:00000400 vector161
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:338    .vectors:00000400 vector162
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:339    .vectors:00000400 vector163
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:340    .vectors:00000400 vector164
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:341    .vectors:00000400 vector165
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:342    .vectors:00000400 vector166
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:343    .vectors:00000400 vector167
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:344    .vectors:00000400 vector168
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 16
+
+
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:345    .vectors:00000400 vector169
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:346    .vectors:00000400 vector170
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:347    .vectors:00000400 vector171
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:348    .vectors:00000400 vector172
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:349    .vectors:00000400 vector173
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:350    .vectors:00000400 vector174
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:351    .vectors:00000400 vector175
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:352    .vectors:00000400 vector176
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:353    .vectors:00000400 vector177
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:354    .vectors:00000400 vector178
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:355    .vectors:00000400 vector179
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:356    .vectors:00000400 vector180
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:357    .vectors:00000400 vector181
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:358    .vectors:00000400 vector182
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:359    .vectors:00000400 vector183
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:360    .vectors:00000400 vector184
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:361    .vectors:00000400 vector185
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:362    .vectors:00000400 vector186
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:363    .vectors:00000400 vector187
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:364    .vectors:00000400 vector188
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:365    .vectors:00000400 vector189
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:366    .vectors:00000400 vector190
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:367    .vectors:00000400 vector191
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:368    .vectors:00000400 vector192
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:369    .vectors:00000400 vector193
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:370    .vectors:00000400 vector194
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:371    .vectors:00000400 vector195
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:372    .vectors:00000400 vector196
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:373    .vectors:00000400 vector197
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:374    .vectors:00000400 vector198
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:375    .vectors:00000400 vector199
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:376    .vectors:00000400 vector200
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:377    .vectors:00000400 vector201
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:378    .vectors:00000400 vector202
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:379    .vectors:00000400 vector203
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:380    .vectors:00000400 vector204
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:381    .vectors:00000400 vector205
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:382    .vectors:00000400 vector206
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:383    .vectors:00000400 vector207
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:384    .vectors:00000400 vector208
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:385    .vectors:00000400 vector209
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:386    .vectors:00000400 vector210
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:387    .vectors:00000400 vector211
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:388    .vectors:00000400 vector212
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:389    .vectors:00000400 vector213
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:390    .vectors:00000400 vector214
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:391    .vectors:00000400 vector215
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:392    .vectors:00000400 vector216
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:393    .vectors:00000400 vector217
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:394    .vectors:00000400 vector218
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:395    .vectors:00000400 vector219
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:396    .vectors:00000400 vector220
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:397    .vectors:00000400 vector221
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:398    .vectors:00000400 vector222
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:399    .vectors:00000400 vector223
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:400    .vectors:00000400 vector224
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:401    .vectors:00000400 vector225
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccK0Ou86.s 			page 17
+
+
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:402    .vectors:00000400 vector226
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:403    .vectors:00000400 vector227
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:404    .vectors:00000400 vector228
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:405    .vectors:00000400 vector229
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:406    .vectors:00000400 vector230
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:407    .vectors:00000400 vector231
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:408    .vectors:00000400 vector232
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:409    .vectors:00000400 vector233
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:410    .vectors:00000400 vector234
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:411    .vectors:00000400 vector235
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:412    .vectors:00000400 vector236
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:413    .vectors:00000400 vector237
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:414    .vectors:00000400 vector238
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:415    .vectors:00000400 vector239
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:416    .vectors:00000400 vector240
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:417    .vectors:00000400 vector241
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:418    .vectors:00000400 vector242
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:419    .vectors:00000400 vector243
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:420    .vectors:00000400 vector244
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:421    .vectors:00000400 vector245
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:422    .vectors:00000400 vector246
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:423    .vectors:00000400 vector247
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:424    .vectors:00000400 vector248
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:425    .vectors:00000400 vector249
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:426    .vectors:00000400 vector250
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:427    .vectors:00000400 vector251
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:428    .vectors:00000400 vector252
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:429    .vectors:00000400 vector253
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:430    .vectors:00000400 vector254
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:431    .vectors:00000400 vector255
+./components/spc56elxx_irq_component_rla/lib/src/vectors.s:435    .vectors:00000400 _unhandled_irq
+
+NO UNDEFINED SYMBOLS

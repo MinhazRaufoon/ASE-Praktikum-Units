@@ -1,0 +1,501 @@
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 1
+
+
+   1              		.file	"components.c"
+   2              		.section	".text","axv"
+   3              	.Ltext0:
+   4              		.cfi_sections	.debug_frame
+   5              		.section	.text.componentsInit,"axv",@progbits
+   6              		.align 1
+   7              		.p2align 4,,15
+   8              		.globl componentsInit
+   9              		.type	componentsInit, @function
+  10              	componentsInit:
+  11              	.LFB4:
+  12              		.file 1 "./components/components.c"
+  13              		.loc 1 26 0
+  14              		.cfi_startproc
+  15 0000 182106F8 		e_stwu %r1,-8(%r1)
+  16              	.LCFI0:
+  17              		.cfi_def_cfa_offset 8
+  18 0004 0080     		se_mflr %r0
+  19 0006 D301     		se_stw %r0,12(%r1)
+  20              		.cfi_offset 65, 4
+  21              		.loc 1 28 0
+  22 0008 78000001 		e_bl boardInit
+  23              	.LVL0:
+  24              		.loc 1 29 0
+  25 000c 78000001 		e_bl irqInit
+  26              	.LVL1:
+  27              		.loc 1 30 0
+  28 0010 78000001 		e_bl eirqInit
+  29              	.LVL2:
+  30              		.loc 1 31 0
+  31 0014 78000001 		e_bl clockInit
+  32              	.LVL3:
+  33              		.loc 1 32 0
+  34 0018 78000001 		e_bl osalInit
+  35              	.LVL4:
+  36              		.loc 1 35 0
+  37 001c C301     		se_lwz %r0,12(%r1)
+  38 001e 0090     		se_mtlr %r0
+  39              		.cfi_restore 65
+  40 0020 2071     		se_addi %r1,8
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 0
+  43              		.loc 1 33 0
+  44 0022 78000000 		e_b spc5LLDInit
+  45              	.LVL5:
+  46              		.cfi_endproc
+  47              	.LFE4:
+  48              		.size	componentsInit, .-componentsInit
+  49              		.section	".text","axv"
+  50              	.Letext0:
+  51              		.file 2 "./components/spc56elxx_board_initialization_component_rla/cfg/board.h"
+  52              		.file 3 "./components/spc56elxx_irq_component_rla/lib/include/irq.h"
+  53              		.file 4 "./components/spc56elxx_irq_component_rla/lib/include/eirq.h"
+  54              		.file 5 "./components/spc56elxx_clock_component_rla/lib/include/clock.h"
+  55              		.file 6 "./components/spc56elxx_osal_component_rla/lib/include/osal.h"
+  56              		.file 7 "./components/spc56elxx_low_level_drivers_component_rla/lib/include/spc5_lld.h"
+  57              		.section	.debug_info,"",@progbits
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 2
+
+
+  58              	.Ldebug_info0:
+  59 0000 00000102 		.4byte	0x102
+  60 0004 0002     		.2byte	0x2
+  61 0006 00000000 		.4byte	.Ldebug_abbrev0
+  62 000a 04       		.byte	0x4
+  63 000b 01       		.uleb128 0x1
+  64 000c 00000000 		.4byte	.LASF16
+  65 0010 01       		.byte	0x1
+  66 0011 00000000 		.4byte	.LASF17
+  67 0015 00000000 		.4byte	.LASF18
+  68 0019 00000000 		.4byte	.Ldebug_ranges0+0
+  69 001d 00000000 		.4byte	0
+  70 0021 00000000 		.4byte	0
+  71 0025 00000000 		.4byte	.Ldebug_line0
+  72 0029 02       		.uleb128 0x2
+  73 002a 01       		.byte	0x1
+  74 002b 06       		.byte	0x6
+  75 002c 00000000 		.4byte	.LASF0
+  76 0030 02       		.uleb128 0x2
+  77 0031 01       		.byte	0x1
+  78 0032 08       		.byte	0x8
+  79 0033 00000000 		.4byte	.LASF1
+  80 0037 02       		.uleb128 0x2
+  81 0038 02       		.byte	0x2
+  82 0039 05       		.byte	0x5
+  83 003a 00000000 		.4byte	.LASF2
+  84 003e 02       		.uleb128 0x2
+  85 003f 02       		.byte	0x2
+  86 0040 07       		.byte	0x7
+  87 0041 00000000 		.4byte	.LASF3
+  88 0045 02       		.uleb128 0x2
+  89 0046 04       		.byte	0x4
+  90 0047 05       		.byte	0x5
+  91 0048 00000000 		.4byte	.LASF4
+  92 004c 02       		.uleb128 0x2
+  93 004d 04       		.byte	0x4
+  94 004e 07       		.byte	0x7
+  95 004f 00000000 		.4byte	.LASF5
+  96 0053 02       		.uleb128 0x2
+  97 0054 08       		.byte	0x8
+  98 0055 05       		.byte	0x5
+  99 0056 00000000 		.4byte	.LASF6
+ 100 005a 02       		.uleb128 0x2
+ 101 005b 08       		.byte	0x8
+ 102 005c 07       		.byte	0x7
+ 103 005d 00000000 		.4byte	.LASF7
+ 104 0061 03       		.uleb128 0x3
+ 105 0062 04       		.byte	0x4
+ 106 0063 05       		.byte	0x5
+ 107 0064 696E7400 		.string	"int"
+ 108 0068 02       		.uleb128 0x2
+ 109 0069 04       		.byte	0x4
+ 110 006a 07       		.byte	0x7
+ 111 006b 00000000 		.4byte	.LASF8
+ 112 006f 02       		.uleb128 0x2
+ 113 0070 04       		.byte	0x4
+ 114 0071 07       		.byte	0x7
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 3
+
+
+ 115 0072 00000000 		.4byte	.LASF9
+ 116 0076 04       		.uleb128 0x4
+ 117 0077 01       		.byte	0x1
+ 118 0078 00000000 		.4byte	.LASF19
+ 119 007c 01       		.byte	0x1
+ 120 007d 1A       		.byte	0x1a
+ 121 007e 01       		.byte	0x1
+ 122 007f 00000000 		.4byte	.LFB4
+ 123 0083 00000000 		.4byte	.LFE4
+ 124 0087 00000000 		.4byte	.LLST0
+ 125 008b 01       		.byte	0x1
+ 126 008c 000000C8 		.4byte	0xc8
+ 127 0090 05       		.uleb128 0x5
+ 128 0091 00000000 		.4byte	.LVL0
+ 129 0095 000000C8 		.4byte	0xc8
+ 130 0099 05       		.uleb128 0x5
+ 131 009a 00000000 		.4byte	.LVL1
+ 132 009e 000000D2 		.4byte	0xd2
+ 133 00a2 05       		.uleb128 0x5
+ 134 00a3 00000000 		.4byte	.LVL2
+ 135 00a7 000000DC 		.4byte	0xdc
+ 136 00ab 05       		.uleb128 0x5
+ 137 00ac 00000000 		.4byte	.LVL3
+ 138 00b0 000000E6 		.4byte	0xe6
+ 139 00b4 05       		.uleb128 0x5
+ 140 00b5 00000000 		.4byte	.LVL4
+ 141 00b9 000000F1 		.4byte	0xf1
+ 142 00bd 06       		.uleb128 0x6
+ 143 00be 00000000 		.4byte	.LVL5
+ 144 00c2 01       		.byte	0x1
+ 145 00c3 000000FB 		.4byte	0xfb
+ 146 00c7 00       		.byte	0
+ 147 00c8 07       		.uleb128 0x7
+ 148 00c9 01       		.byte	0x1
+ 149 00ca 00000000 		.4byte	.LASF10
+ 150 00ce 02       		.byte	0x2
+ 151 00cf 37       		.byte	0x37
+ 152 00d0 01       		.byte	0x1
+ 153 00d1 01       		.byte	0x1
+ 154 00d2 07       		.uleb128 0x7
+ 155 00d3 01       		.byte	0x1
+ 156 00d4 00000000 		.4byte	.LASF11
+ 157 00d8 03       		.byte	0x3
+ 158 00d9 87       		.byte	0x87
+ 159 00da 01       		.byte	0x1
+ 160 00db 01       		.byte	0x1
+ 161 00dc 07       		.uleb128 0x7
+ 162 00dd 01       		.byte	0x1
+ 163 00de 00000000 		.4byte	.LASF12
+ 164 00e2 04       		.byte	0x4
+ 165 00e3 71       		.byte	0x71
+ 166 00e4 01       		.byte	0x1
+ 167 00e5 01       		.byte	0x1
+ 168 00e6 08       		.uleb128 0x8
+ 169 00e7 01       		.byte	0x1
+ 170 00e8 00000000 		.4byte	.LASF13
+ 171 00ec 05       		.byte	0x5
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 4
+
+
+ 172 00ed 0444     		.2byte	0x444
+ 173 00ef 01       		.byte	0x1
+ 174 00f0 01       		.byte	0x1
+ 175 00f1 07       		.uleb128 0x7
+ 176 00f2 01       		.byte	0x1
+ 177 00f3 00000000 		.4byte	.LASF14
+ 178 00f7 06       		.byte	0x6
+ 179 00f8 8B       		.byte	0x8b
+ 180 00f9 01       		.byte	0x1
+ 181 00fa 01       		.byte	0x1
+ 182 00fb 07       		.uleb128 0x7
+ 183 00fc 01       		.byte	0x1
+ 184 00fd 00000000 		.4byte	.LASF15
+ 185 0101 07       		.byte	0x7
+ 186 0102 38       		.byte	0x38
+ 187 0103 01       		.byte	0x1
+ 188 0104 01       		.byte	0x1
+ 189 0105 00       		.byte	0
+ 190              		.section	.debug_abbrev,"",@progbits
+ 191              	.Ldebug_abbrev0:
+ 192 0000 01       		.uleb128 0x1
+ 193 0001 11       		.uleb128 0x11
+ 194 0002 01       		.byte	0x1
+ 195 0003 25       		.uleb128 0x25
+ 196 0004 0E       		.uleb128 0xe
+ 197 0005 13       		.uleb128 0x13
+ 198 0006 0B       		.uleb128 0xb
+ 199 0007 03       		.uleb128 0x3
+ 200 0008 0E       		.uleb128 0xe
+ 201 0009 1B       		.uleb128 0x1b
+ 202 000a 0E       		.uleb128 0xe
+ 203 000b 55       		.uleb128 0x55
+ 204 000c 06       		.uleb128 0x6
+ 205 000d 11       		.uleb128 0x11
+ 206 000e 01       		.uleb128 0x1
+ 207 000f 52       		.uleb128 0x52
+ 208 0010 01       		.uleb128 0x1
+ 209 0011 10       		.uleb128 0x10
+ 210 0012 06       		.uleb128 0x6
+ 211 0013 00       		.byte	0
+ 212 0014 00       		.byte	0
+ 213 0015 02       		.uleb128 0x2
+ 214 0016 24       		.uleb128 0x24
+ 215 0017 00       		.byte	0
+ 216 0018 0B       		.uleb128 0xb
+ 217 0019 0B       		.uleb128 0xb
+ 218 001a 3E       		.uleb128 0x3e
+ 219 001b 0B       		.uleb128 0xb
+ 220 001c 03       		.uleb128 0x3
+ 221 001d 0E       		.uleb128 0xe
+ 222 001e 00       		.byte	0
+ 223 001f 00       		.byte	0
+ 224 0020 03       		.uleb128 0x3
+ 225 0021 24       		.uleb128 0x24
+ 226 0022 00       		.byte	0
+ 227 0023 0B       		.uleb128 0xb
+ 228 0024 0B       		.uleb128 0xb
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 5
+
+
+ 229 0025 3E       		.uleb128 0x3e
+ 230 0026 0B       		.uleb128 0xb
+ 231 0027 03       		.uleb128 0x3
+ 232 0028 08       		.uleb128 0x8
+ 233 0029 00       		.byte	0
+ 234 002a 00       		.byte	0
+ 235 002b 04       		.uleb128 0x4
+ 236 002c 2E       		.uleb128 0x2e
+ 237 002d 01       		.byte	0x1
+ 238 002e 3F       		.uleb128 0x3f
+ 239 002f 0C       		.uleb128 0xc
+ 240 0030 03       		.uleb128 0x3
+ 241 0031 0E       		.uleb128 0xe
+ 242 0032 3A       		.uleb128 0x3a
+ 243 0033 0B       		.uleb128 0xb
+ 244 0034 3B       		.uleb128 0x3b
+ 245 0035 0B       		.uleb128 0xb
+ 246 0036 27       		.uleb128 0x27
+ 247 0037 0C       		.uleb128 0xc
+ 248 0038 11       		.uleb128 0x11
+ 249 0039 01       		.uleb128 0x1
+ 250 003a 12       		.uleb128 0x12
+ 251 003b 01       		.uleb128 0x1
+ 252 003c 40       		.uleb128 0x40
+ 253 003d 06       		.uleb128 0x6
+ 254 003e 9742     		.uleb128 0x2117
+ 255 0040 0C       		.uleb128 0xc
+ 256 0041 01       		.uleb128 0x1
+ 257 0042 13       		.uleb128 0x13
+ 258 0043 00       		.byte	0
+ 259 0044 00       		.byte	0
+ 260 0045 05       		.uleb128 0x5
+ 261 0046 898201   		.uleb128 0x4109
+ 262 0049 00       		.byte	0
+ 263 004a 11       		.uleb128 0x11
+ 264 004b 01       		.uleb128 0x1
+ 265 004c 31       		.uleb128 0x31
+ 266 004d 13       		.uleb128 0x13
+ 267 004e 00       		.byte	0
+ 268 004f 00       		.byte	0
+ 269 0050 06       		.uleb128 0x6
+ 270 0051 898201   		.uleb128 0x4109
+ 271 0054 00       		.byte	0
+ 272 0055 11       		.uleb128 0x11
+ 273 0056 01       		.uleb128 0x1
+ 274 0057 9542     		.uleb128 0x2115
+ 275 0059 0C       		.uleb128 0xc
+ 276 005a 31       		.uleb128 0x31
+ 277 005b 13       		.uleb128 0x13
+ 278 005c 00       		.byte	0
+ 279 005d 00       		.byte	0
+ 280 005e 07       		.uleb128 0x7
+ 281 005f 2E       		.uleb128 0x2e
+ 282 0060 00       		.byte	0
+ 283 0061 3F       		.uleb128 0x3f
+ 284 0062 0C       		.uleb128 0xc
+ 285 0063 03       		.uleb128 0x3
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 6
+
+
+ 286 0064 0E       		.uleb128 0xe
+ 287 0065 3A       		.uleb128 0x3a
+ 288 0066 0B       		.uleb128 0xb
+ 289 0067 3B       		.uleb128 0x3b
+ 290 0068 0B       		.uleb128 0xb
+ 291 0069 27       		.uleb128 0x27
+ 292 006a 0C       		.uleb128 0xc
+ 293 006b 3C       		.uleb128 0x3c
+ 294 006c 0C       		.uleb128 0xc
+ 295 006d 00       		.byte	0
+ 296 006e 00       		.byte	0
+ 297 006f 08       		.uleb128 0x8
+ 298 0070 2E       		.uleb128 0x2e
+ 299 0071 00       		.byte	0
+ 300 0072 3F       		.uleb128 0x3f
+ 301 0073 0C       		.uleb128 0xc
+ 302 0074 03       		.uleb128 0x3
+ 303 0075 0E       		.uleb128 0xe
+ 304 0076 3A       		.uleb128 0x3a
+ 305 0077 0B       		.uleb128 0xb
+ 306 0078 3B       		.uleb128 0x3b
+ 307 0079 05       		.uleb128 0x5
+ 308 007a 27       		.uleb128 0x27
+ 309 007b 0C       		.uleb128 0xc
+ 310 007c 3C       		.uleb128 0x3c
+ 311 007d 0C       		.uleb128 0xc
+ 312 007e 00       		.byte	0
+ 313 007f 00       		.byte	0
+ 314 0080 00       		.byte	0
+ 315              		.section	.debug_loc,"",@progbits
+ 316              	.Ldebug_loc0:
+ 317              	.LLST0:
+ 318 0000 00000000 		.4byte	.LFB4
+ 319 0004 00000000 		.4byte	.LCFI0
+ 320 0008 0002     		.2byte	0x2
+ 321 000a 71       		.byte	0x71
+ 322 000b 00       		.sleb128 0
+ 323 000c 00000000 		.4byte	.LCFI0
+ 324 0010 00000000 		.4byte	.LCFI1
+ 325 0014 0002     		.2byte	0x2
+ 326 0016 71       		.byte	0x71
+ 327 0017 08       		.sleb128 8
+ 328 0018 00000000 		.4byte	.LCFI1
+ 329 001c 00000000 		.4byte	.LFE4
+ 330 0020 0002     		.2byte	0x2
+ 331 0022 71       		.byte	0x71
+ 332 0023 00       		.sleb128 0
+ 333 0024 00000000 		.4byte	0
+ 334 0028 00000000 		.4byte	0
+ 335              		.section	.debug_aranges,"",@progbits
+ 336 0000 0000001C 		.4byte	0x1c
+ 337 0004 0002     		.2byte	0x2
+ 338 0006 00000000 		.4byte	.Ldebug_info0
+ 339 000a 04       		.byte	0x4
+ 340 000b 00       		.byte	0
+ 341 000c 0000     		.2byte	0
+ 342 000e 0000     		.2byte	0
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 7
+
+
+ 343 0010 00000000 		.4byte	.LFB4
+ 344 0014 00000026 		.4byte	.LFE4-.LFB4
+ 345 0018 00000000 		.4byte	0
+ 346 001c 00000000 		.4byte	0
+ 347              		.section	.debug_ranges,"",@progbits
+ 348              	.Ldebug_ranges0:
+ 349 0000 00000000 		.4byte	.LFB4
+ 350 0004 00000000 		.4byte	.LFE4
+ 351 0008 00000000 		.4byte	0
+ 352 000c 00000000 		.4byte	0
+ 353              		.section	.debug_line,"",@progbits
+ 354              	.Ldebug_line0:
+ 355 0000 000001B0 		.section	.debug_str,"MS",@progbits,1
+ 355      00020000 
+ 355      01940201 
+ 355      FB0E0D00 
+ 355      01010101 
+ 356              	.LASF6:
+ 357 0000 6C6F6E67 		.string	"long long int"
+ 357      206C6F6E 
+ 357      6720696E 
+ 357      7400
+ 358              	.LASF3:
+ 359 000e 73686F72 		.string	"short unsigned int"
+ 359      7420756E 
+ 359      7369676E 
+ 359      65642069 
+ 359      6E7400
+ 360              	.LASF8:
+ 361 0021 756E7369 		.string	"unsigned int"
+ 361      676E6564 
+ 361      20696E74 
+ 361      00
+ 362              	.LASF19:
+ 363 002e 636F6D70 		.string	"componentsInit"
+ 363      6F6E656E 
+ 363      7473496E 
+ 363      697400
+ 364              	.LASF5:
+ 365 003d 6C6F6E67 		.string	"long unsigned int"
+ 365      20756E73 
+ 365      69676E65 
+ 365      6420696E 
+ 365      7400
+ 366              	.LASF18:
+ 367 004f 433A5C55 		.string	"C:\\Users\\ASE-Lab\\Desktop\\SPC56ELxx_RLA CAN Test Application for DiscoveryPlus"
+ 367      73657273 
+ 367      5C415345 
+ 367      2D4C6162 
+ 367      5C446573 
+ 368              	.LASF7:
+ 369 009d 6C6F6E67 		.string	"long long unsigned int"
+ 369      206C6F6E 
+ 369      6720756E 
+ 369      7369676E 
+ 369      65642069 
+ 370              	.LASF11:
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 8
+
+
+ 371 00b4 69727149 		.string	"irqInit"
+ 371      6E697400 
+ 372              	.LASF1:
+ 373 00bc 756E7369 		.string	"unsigned char"
+ 373      676E6564 
+ 373      20636861 
+ 373      7200
+ 374              	.LASF16:
+ 375 00ca 474E5520 		.ascii	"GNU C 4.9.4 20160726 (Sat May 27 11:09:55 CDT 2017      "
+ 375      4320342E 
+ 375      392E3420 
+ 375      32303136 
+ 375      30373236 
+ 376 0102 20202062 		.string	"   build.sh rev=gd8b6c20 s=F494 ELe200 -V release_gd8b6c20_build_Fed_ELe200_ML0) -mcall-s
+ 376      75696C64 
+ 376      2E736820 
+ 376      7265763D 
+ 376      67643862 
+ 377              	.LASF13:
+ 378 0203 636C6F63 		.string	"clockInit"
+ 378      6B496E69 
+ 378      7400
+ 379              	.LASF17:
+ 380 020d 2E2F636F 		.string	"./components/components.c"
+ 380      6D706F6E 
+ 380      656E7473 
+ 380      2F636F6D 
+ 380      706F6E65 
+ 381              	.LASF12:
+ 382 0227 65697271 		.string	"eirqInit"
+ 382      496E6974 
+ 382      00
+ 383              	.LASF10:
+ 384 0230 626F6172 		.string	"boardInit"
+ 384      64496E69 
+ 384      7400
+ 385              	.LASF0:
+ 386 023a 7369676E 		.string	"signed char"
+ 386      65642063 
+ 386      68617200 
+ 387              	.LASF4:
+ 388 0246 6C6F6E67 		.string	"long int"
+ 388      20696E74 
+ 388      00
+ 389              	.LASF14:
+ 390 024f 6F73616C 		.string	"osalInit"
+ 390      496E6974 
+ 390      00
+ 391              	.LASF2:
+ 392 0258 73686F72 		.string	"short int"
+ 392      7420696E 
+ 392      7400
+ 393              	.LASF15:
+ 394 0262 73706335 		.string	"spc5LLDInit"
+ 394      4C4C4449 
+ 394      6E697400 
+ 395              	.LASF9:
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 9
+
+
+ 396 026e 73697A65 		.string	"sizetype"
+ 396      74797065 
+ 396      00
+ 397              		.ident	"GCC: (GNU) 4.9.4 20160726 (Sat May 27 11:09:55 CDT 2017         build.sh rev=gd8b6c20 s=F4
+GAS LISTING C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 components.c
+C:\Users\ASE-Lab\AppData\Local\Temp\ccUiZ5QY.s:10     .text.componentsInit:00000000 componentsInit
+
+UNDEFINED SYMBOLS
+boardInit
+irqInit
+eirqInit
+clockInit
+osalInit
+spc5LLDInit
