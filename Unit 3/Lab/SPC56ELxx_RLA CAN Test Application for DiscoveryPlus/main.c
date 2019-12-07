@@ -196,15 +196,6 @@ void can_receive() {
 				ecu1State.ecu2Status = ABSENT;
 				break;
 
-			case 0x83:
-				//ecu1State.indicatorStates = (CAN_0.BUF[0].DATA.B[1] | CAN_0.BUF[0].DATA.B[2]<<1) & 0x7;
-				break;
-
-			case 0x84:
-				data = CAN_0.BUF[0].DATA.B[2];
-				ecu1State.headlightStates = data & 0x7;
-				break;
-
 			default :
 				break;
 		}
