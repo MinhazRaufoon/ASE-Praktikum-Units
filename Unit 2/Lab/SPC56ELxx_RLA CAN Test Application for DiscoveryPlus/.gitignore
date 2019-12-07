@@ -1,0 +1,10 @@
+*.xml
+*.txt
+*.mak
+.cproject
+.spcproject
+.project
+.dep
+.settings
+pclint
+components
